@@ -9,27 +9,33 @@ set -e
 
 echo ''
 
+# prints [..] in blue
 info () {
   printf "\r  [ \033[00;34m..\033[0m ] $1\n"
 }
 
+# prints [??] in brown
 user () {
-  printf "\r  [ \033[0;33m??\033[0m ] $1\n"
+  printf "\r  [ \033[10;33m??\033[0m ] $1\n"
 }
 
+# prints [OK] in green
 success () {
   printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
 }
 
+# prints [FAIL] in red
 fail () {
   printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
   echo ''
   exit
 }
 
+# create a new gitconfig file based on an example template
 setup_gitconfig () {
   if ! [ -f git/gitconfig.local.symlink ]
   then
+    # this liner
     info 'setup gitconfig'
 
     git_credential='cache'
@@ -39,10 +45,12 @@ setup_gitconfig () {
     fi
 
     user ' - What is your github author name?'
+    # reads a single ine from the stdin and store in variable git_authorname
     read -e git_authorname
     user ' - What is your github author email?'
     read -e git_authoremail
 
+    # replace `AUTHORNAME` etc. with user's input in the template file and create a new new gitconfig file
     sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" git/gitconfig.local.symlink.example > git/gitconfig.local.symlink
 
     success 'gitconfig'
@@ -50,20 +58,31 @@ setup_gitconfig () {
 }
 
 
+## link file/folder, extra precautions are taken, such as avoiding original file/folder overwritten
 link_file () {
   local src=$1 dst=$2
 
   local overwrite= backup= skip=
   local action=
 
+  # -f returns true if file exists
+  # -o returns true if the shell option opt is enabled
+  # -d returns true if the file is a directory
+  # -L returns true if the file is a symbolic link
+  # expr1 -a expr2 returns true if expression1 and expression2 are both not null
+  # expr1 -o expr2 return true if either of the expressions expr1 or expr2 are not null
+
+  # if the destination file exists, or is a folder, or is a symbolic link
   if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]
   then
 
     if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]
     then
 
+      ## get the value of the original linked file
       local currentSrc="$(readlink $dst)"
 
+      ## make sure the there is no existing linked folder
       if [ "$currentSrc" == "$src" ]
       then
 
@@ -130,14 +149,19 @@ install_dotfiles () {
 
   local overwrite_all=false backup_all=false skip_all=false
 
+  ## find all the symlink ending files
   for src in $(find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
   do
+    ## remove the trailing suffix, i.e., symlink, and do the linking
     dst="$HOME/.$(basename "${src%.*}")"
     link_file "$src" "$dst"
   done
 }
 
+# create a new gitconfig file based on an example template
 setup_gitconfig
+
+# link all dot files
 install_dotfiles
 
 # If we're on a Mac, let's install and setup homebrew.
