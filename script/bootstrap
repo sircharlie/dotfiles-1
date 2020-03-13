@@ -1,57 +1,46 @@
-#!/usr/bin/env bash
+#!/bin/bash
 #
-# bootstrap installs things.
+# bootstrap and installs things.
 
 cd "$(dirname "$0")/.."
 DOTFILES_ROOT=$(pwd -P)
 
+# exit immediately if a command exits
 set -e
 
 echo ''
 
-# prints [..] in blue
 info () {
-  printf "\r  [ \033[00;34m..\033[0m ] $1\n"
+  echo -e "\r  [ \033[00;34mINFO\033[0m ] $1"
 }
 
-# prints [??] in brown
 user () {
-  printf "\r  [ \033[10;33m??\033[0m ] $1\n"
+  echo -en "\r  [ \033[10;33mENTER\033[0m ] $1 "
 }
 
-# prints [OK] in green
 success () {
-  printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
+  echo -e "\r\033[2K  [ \033[00;32mOK\033[0m ] $1"
 }
 
-# prints [FAIL] in red
 fail () {
-  printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
+  echo -e "\r\033[2K  [\033[0;31mFAIL\033[0m] $1"
   echo ''
   exit
 }
 
 # create a new gitconfig file based on an example template
 setup_gitconfig () {
-  if ! [ -f git/gitconfig.local.symlink ]
-  then
-    # this liner
+  if ! [ -f git/gitconfig.local.symlink ]; then
     info 'setup gitconfig'
 
     git_credential='cache'
-    if [ "$(uname -s)" == "Darwin" ]
-    then
-      git_credential='osxkeychain'
-    fi
 
-    user ' - What is your github author name?'
-    # reads a single ine from the stdin and store in variable git_authorname
-    read -e git_authorname
-    user ' - What is your github author email?'
-    read -e git_authoremail
+    user 'what is your github username?'
+    read -e git_username
+    user 'what is your github email?'
+    read -e git_email
 
-    # replace `AUTHORNAME` etc. with user's input in the template file and create a new new gitconfig file
-    sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" git/gitconfig.local.symlink.example > git/gitconfig.local.symlink
+    sed -e "s/USERNAME/$git_username/g" -e "s/EMAIL/$git_email/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" git/gitconfig.local.symlink.example > git/gitconfig.local.symlink
 
     success 'gitconfig'
   fi
@@ -90,7 +79,7 @@ link_file () {
 
       else
 
-        user "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
+        user "file already exists: $dst ($(basename "$src")), what do you want to do?\n\
         [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
         read -n 1 action
 
@@ -158,23 +147,30 @@ install_dotfiles () {
   done
 }
 
+
+check_status_code () {
+  if [ $? -eq 0 ]; then
+    success $1
+  else
+    fail "error installing $1"
+}
+install_software () {
+  # install nvm
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash &> /dev/null
+  check_status_code "nvm"
+
+  # set up Vundle
+  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+  check_status_code "vundle"
+}
+
 # create a new gitconfig file based on an example template
 setup_gitconfig
 
 # link all dot files
 install_dotfiles
 
-# If we're on a Mac, let's install and setup homebrew.
-if [ "$(uname -s)" == "Darwin" ]
-then
-  info "installing dependencies"
-  if source bin/dot | while read -r data; do info "$data"; done
-  then
-    success "dependencies installed"
-  else
-    fail "error installing dependencies"
-  fi
-fi
+install_software
 
 echo ''
-echo '  All installed!'
+success '  Everything is installed!'
