@@ -5,25 +5,22 @@
 cd "$(dirname "$0")/.."
 DOTFILES_ROOT=$(pwd -P)
 
-# exit immediately if a command exits
-set -e
-
 echo ''
 
 info () {
-  echo -e "\r  [ \033[00;34mINFO\033[0m ] $1"
+  echo -e "\r  [ \033[00;34m👀\033[0m ] $1"
 }
 
 user () {
-  echo -en "\r  [ \033[10;33mENTER\033[0m ] $1 "
+  echo -en "\r  [ \033[10;33m💩\033[0m ] $1 "
 }
 
 success () {
-  echo -e "\r\033[2K  [ \033[00;32mOK\033[0m ] $1"
+  echo -e "\r\033[2K  [ \033[00;32m👍\033[0m ] $1"
 }
 
 fail () {
-  echo -e "\r\033[2K  [\033[0;31mFAIL\033[0m] $1"
+  echo -e "\r\033[2K  [ \033[0;31mFAIL\033[0m ] $1"
   echo ''
   exit
 }
@@ -134,7 +131,7 @@ link_file () {
 }
 
 install_dotfiles () {
-  info 'installing dotfiles'
+  info 'installing dotfiles...'
 
   local overwrite_all=false backup_all=false skip_all=false
 
@@ -152,15 +149,19 @@ check_status_code () {
   if [ $? -eq 0 ]; then
     success $1
   else
-    fail "error installing $1"
+    fail "error installing $*"
+  fi
 }
+
 install_software () {
-  # install nvm
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash &> /dev/null
+  info 'installing softwares...'
+  
+  info 'installing nvm...'
+  curl -o- -s https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash &> /dev/null
   check_status_code "nvm"
 
-  # set up Vundle
-  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+  info 'installing vundle...'
+  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim &> /dev/null
   check_status_code "vundle"
 }
 
@@ -173,4 +174,8 @@ install_dotfiles
 install_software
 
 echo ''
-success '  Everything is installed!'
+success 'Everything is installed!'
+echo ''
+info "Run 'source ~/.bashrc' to activate paths and env variables!"
+info "Run './script/install' to setup more softwares"
+echo ''
