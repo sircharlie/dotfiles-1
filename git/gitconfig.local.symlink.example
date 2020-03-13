@@ -1,3 +1,4 @@
+# template for user information, replaced after running script/bootstrap
 [user]
         name = AUTHORNAME
         email = AUTHOREMAIL
