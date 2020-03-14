@@ -147,18 +147,22 @@ install_dotfiles () {
 
 check_status_code () {
   if [ $? -eq 0 ]; then
-    success $1
+    success "$1 is installed"
   else
-    fail "error installing $*"
+    fail "error installing $1"
   fi
 }
 
 install_software () {
-  info 'installing softwares...'
-  
   info 'installing nvm...'
   curl -o- -s https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash &> /dev/null
   check_status_code "nvm"
+
+  info 'installing node...'
+  . "$HOME/.bashrc"
+  . "$NVM_DIR/nvm.sh"
+  nvm install node --lts &> /dev/null
+  check_status_code 'node'
 
   info 'installing vundle...'
   git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim &> /dev/null
