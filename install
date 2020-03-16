@@ -1,3 +1,0 @@
-# install softwares
-
-find . -name install.sh | while read installer ; do source "${installer}" ; done

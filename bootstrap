@@ -2,7 +2,7 @@
 #
 # bootstrap and installs things.
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || exit
 DOTFILES_ROOT=$(pwd -P)
 
 echo ''
@@ -20,12 +20,15 @@ success () {
 }
 
 fail () {
-  echo -e "\r\033[2K  [ \033[0;31mFAIL\033[0m ] $1"
-  echo ''
-  exit
+  if [ $? -eq 0 ]; then
+    success "$1 is installed"
+  else
+    echo -e "\r\033[2K  [ \033[0;31mFAIL\033[0m ] error installing $1"
+    echo ''
+    exit
+  fi
 }
 
-# create a new gitconfig file based on an example template
 setup_gitconfig () {
   if ! [ -f git/gitconfig.local.symlink ]; then
     info 'setup gitconfig'
@@ -44,7 +47,6 @@ setup_gitconfig () {
 }
 
 
-## link file/folder, extra precautions are taken, such as avoiding original file/folder overwritten
 link_file () {
   local src=$1 dst=$2
 
@@ -144,35 +146,24 @@ install_dotfiles () {
   done
 }
 
-
-check_status_code () {
-  if [ $? -eq 0 ]; then
-    success "$1 is installed"
-  else
-    fail "error installing $1"
-  fi
-}
-
 install_software () {
   info 'installing nvm...'
   curl -o- -s https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash &> /dev/null
-  check_status_code "nvm"
+  fail "nvm"
 
   info 'installing node...'
   . "$HOME/.bashrc"
   . "$NVM_DIR/nvm.sh"
   nvm install node --lts &> /dev/null
-  check_status_code 'node'
+  fail 'node'
 
   info 'installing vundle...'
   git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim &> /dev/null
-  check_status_code "vundle"
+  fail "vundle"
 }
 
-# create a new gitconfig file based on an example template
 setup_gitconfig
 
-# link all dot files
 install_dotfiles
 
 install_software
@@ -181,5 +172,5 @@ echo ''
 success 'Everything is installed!'
 echo ''
 info "Run 'source ~/.bashrc' to activate paths and env variables!"
-info "Run './script/install' to setup more softwares"
+info "Run 'vim +PluginInstall +qall' in vim to setup more vim!"
 echo ''
