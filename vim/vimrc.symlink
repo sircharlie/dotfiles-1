@@ -74,7 +74,6 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
-Plugin 'dense-analysis/ale'
 Plugin 'matze/vim-move'
 Plugin 'morhetz/gruvbox'
 Plugin 'mattn/emmet-vim'
