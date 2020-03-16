@@ -1,1 +1,1 @@
-alias vwk='vim -c VimwikiIndex'
+alias vw='vim -c VimwikiIndex'

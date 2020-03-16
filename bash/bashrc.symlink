@@ -54,19 +54,14 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-# TODO: measure if slows the shell
-#parse_git_branch() {
-#	git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
-#}
+parse_git_branch() {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
 
 if [ "$color_prompt" = yes ]; then
-  # TODO: measure if the git slows the shell
-  #  PS1='\[\e[01;35m\][\t \d] \[\e[01;36m\]\w\[\e[01;31m\] $(parse_git_branch)\[\e[01;32m\033[00m\]\n$ '
-  PS1='\[\e[01;35m\][\t \d] \[\e[01;36m\]\w\[\e[01;31m\] \[\e[01;32m\033[00m\]\n$ '
+  PS1='\e[01;35m[\t \d] \e[36m\w\e[0m \e[01;31m$(parse_git_branch)\e[0m 🔥\n$ '
 else
-  # TODO: same as above, measrure git speed
-  #  PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w🔥$(parse_git_branch)\n\$ '
-  PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w🔥\n\$ '
+  PS1='[\t \d] \w $(parse_git_branch) 🔥\n$ '
 fi
 
 unset color_prompt force_color_prompt
