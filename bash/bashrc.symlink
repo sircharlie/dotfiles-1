@@ -1,9 +1,8 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
-
+#
+# Modified by https://github.com/sircharlie
+#
 # don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
 HISTCONTROL=ignoreboth
 
 # append to the history file, don't overwrite it
@@ -16,10 +15,6 @@ HISTFILESIZE=2000
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
-
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -35,78 +30,54 @@ case "$TERM" in
 esac
 
 # set colors for directory
-LS_COLORS='ow=04;31;40:fi=00;33'
-export LS_COLORS
-
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-#force_color_prompt=yes
-
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
-    else
-	color_prompt=
-    fi
-fi
-
-parse_git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
-}
-
-if [ "$color_prompt" = yes ]; then
-  PS1='\e[01;35m[\t \d] \e[36m\w\e[0m \e[01;31m$(parse_git_branch)\e[0m 🔥\n$ '
-else
-  PS1='[\t \d] \w $(parse_git_branch) 🔥\n$ '
-fi
-
-unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
-
-# colored GCC warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export LS_COLORS='ow=04;31;40:fi=00;33'
 
 # Alias definitions.
 export DOTFILES=$HOME/.dotfiles
 
 # all of our zsh files
-config_files=$DOTFILES/**/*.bash
+config_files=($DOTFILES/**/*.bash)
+
+declare -a other_files
+declare -a completion_files
 
 # load the path files
-for file in ${config_files}
-do
-    if [ -z "${file#*/path.bash}" ]; then
+for file in ${config_files[@]}; do
+  case ${file#*/.dotfiles/*/} in
+    path.bash)
       source $file
-    fi
+      ;;
+    completion.bash)
+      completion_files+=($file)
+      ;;
+    *)
+      other_files+=($file)
+      ;;
+  esac
 done
 
-# load everything but the path and completion files
-for file in ${config_files}
-do
-    if [ ! -z "${file#*/completion.bash}" -a ! -z "${file#*/path.bash}" ]; then
-      source $file
-    fi
-done
+# load other files and completion files
+for file in ${other_files[@]}; do source $file; done
+for file in ${completion_files[@]}; do source $file; done
 
-# load the completion files
-for file in ${config_files}
-do
-    if [ -z "${file#*/completion.bash}" ]; then
-      source $file
-    fi
-done
+# PROMPT_COLOR is imported, it has to be placed after config files import
+if [ "$color_prompt" = yes ]; then PS1=$PROMPT_COLOR
+else PS1=$PROMPT_NO_COLOR
+fi
+
+if [ -f "$HOME/.bash-git-prompt/gitprompt.sh" ]; then
+    GIT_PROMPT_ONLY_IN_REPO=1
+    GIT_PROMPT_FETCH_REMOTE_STATUS=0 #avoid fetching remote status
+    GIT_PROMPT_THEME=Single_line_Dark #better theme
+    GIT_PROMPT_IGNORE_STASH=1 #ignore any stashes.
+    source $HOME/.bash-git-prompt/gitprompt.sh
+fi
+
+# avoid re-write of array
+unset color_prompt force_color_prompt other_files completion_files
+
+# colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -119,7 +90,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-
+# nvm set up
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
