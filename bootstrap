@@ -160,6 +160,10 @@ install_software () {
   info 'installing vundle...'
   git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim &> /dev/null
   fail "vundle"
+
+  info 'installing git-prompt...'
+  git clone https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt --depth=1 &> /dev/null
+  fail 'git-prompt'
 }
 
 setup_gitconfig
