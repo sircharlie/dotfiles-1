@@ -74,6 +74,7 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
+Plugin 'tpope/vim-fugitive'
 Plugin 'matze/vim-move'
 Plugin 'morhetz/gruvbox'
 Plugin 'mattn/emmet-vim'
@@ -158,3 +159,10 @@ autocmd FileType html,css EmmetInstall
 " Dark
 set background=dark
 colorscheme gruvbox
+if &term =~ '^screen'
+    " tmux will send xterm-style keys when its xterm-keys option is on
+    execute "set <xUp>=\e[1;*A"
+    execute "set <xDown>=\e[1;*B"
+    execute "set <xRight>=\e[1;*C"
+    execute "set <xLeft>=\e[1;*D"
+endif

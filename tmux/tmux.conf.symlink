@@ -5,6 +5,7 @@ set -g prefix C-a
 # Making windows purrty
 set-window-option -g status-bg cyan
 set-window-option -g status-fg black
+set-window-option -g xterm-keys on
 
 # More options
 set-window-option -g automatic-rename on
@@ -19,9 +20,6 @@ bind -n WheelDownPane select-pane -t= \;                 send-keys -M
 set -g set-titles on
 set -g set-titles-string "tmux.#I.#W"
 
-# Act like Vim
-setw -g mode-keys vi
-
 # Vim-like pane navigation
 bind C-h select-pane -L
 bind h select-pane -L
@@ -35,8 +33,3 @@ bind l select-pane -R
 # Vim-like splitting
 bind s split-window -v
 bind v split-window -h
-
-# UTF8 fixes - NOTE: They don't seem to work or do anything anymore
-# set -g mouse-utf8 on
-# setw -g utf8 on
-# set -g status-utf8 on
