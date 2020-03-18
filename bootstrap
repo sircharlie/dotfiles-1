@@ -146,24 +146,54 @@ install_dotfiles () {
   done
 }
 
-install_software () {
+install_vim() {
   info 'installing nvm...'
-  curl -o- -s https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash &> /dev/null
-  fail "nvm"
+  if [ ! -f "$HOME/.nvm/nvm.sh" ]; then
+    curl -o- -s https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash &> /dev/null
+    fail "nvm"
+  else
+    success 'skipped nvm'
+  fi
+}
 
+install_node() {
   info 'installing node...'
-  . "$HOME/.bashrc"
-  . "$NVM_DIR/nvm.sh"
-  nvm install node --lts &> /dev/null
-  fail 'node'
+  command -v node &> /dev/null
+  if [ $? -ne 0 ]; then
+    . "$HOME/.bashrc"
+    . "$NVM_DIR/nvm.sh"
+    nvm install node --lts &> /dev/null
+    fail 'node'
+  else
+    success 'skipped node'
+  fi
+}
 
+install_vundle() {
   info 'installing vundle...'
-  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim &> /dev/null
-  fail "vundle"
+  if [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim &> /dev/null
+    fail "vundle"
+  else
+    success 'skipped vundle'
+  fi
+}
 
+install_git_prompt() {
   info 'installing git-prompt...'
-  git clone https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt --depth=1 &> /dev/null
-  fail 'git-prompt'
+  if [ ! -d "$HOME/.bash-git-prompt" ]; then
+    git clone https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt --depth=1 &> /dev/null
+    fail 'git-prompt'
+  else
+    success 'skipped bash-git-prompt'
+  fi
+}
+
+install_software () {
+  install_vim
+  install_node
+  install_vundle
+  install_git_prompt
 }
 
 setup_gitconfig
