@@ -74,8 +74,12 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
+Plugin 'xuyuanp/nerdtree-git-plugin'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-fugitive'
+Plugin 'ryanoasis/vim-devicons'
 Plugin 'matze/vim-move'
 Plugin 'morhetz/gruvbox'
 Plugin 'mattn/emmet-vim'
@@ -116,8 +120,7 @@ nnoremap <C-]> <Nop>
 nnoremap <C-]> zM
 nnoremap <space> za
 
-nnoremap <C-L> :nohl<CR><C-L>
-map <C-\> :NERDTreeToggle<CR>
+map <C-\> :NERDTreeTabsToggle<CR>
 
 vmap <C-Down> <Plug>MoveBlockDown
 vmap <C-Up> <Plug>MoveBlockUp
@@ -161,6 +164,8 @@ nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <c-j> :TmuxNavigateUp<cr>
 nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
 nnoremap <silent> <nop> :TmuxNavigatePrevious<cr>
+let NERDTreeIgnore=['node_modules$']
+
 
 "---------------------------------------------------------
 " Themes
