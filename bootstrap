@@ -191,13 +191,20 @@ install_git_prompt() {
 
 install_nvim() {
   info 'installing neovim...'
+
   if [ ! -d "$HOME/squashfs-root" ]; then
-    curl -OLs https://github.com/neovim/neovim/releases/download/v0.4.3/nvim.appimage
+    cd $HOME
+    curl -LOs https://github.com/neovim/neovim/releases/download/v0.4.3/nvim.appimage
+    chmod u+x ./nvim.appimage
     ./nvim.appimage --appimage-extract &> /dev/null
     rm ./nvim.appimage
     fail 'neovim'
+    cd $DOTFILES_ROOT
+    mkdir -p $HOME/.config/nvim
+    touch $HOME/.config/nvim/init.vim
+    echo -e "set runtimepath^=~/.vim runtimepath+=~/.vim/after\nlet &packpath = &runtimepath\nsource ~/.vimrc" > $HOME/.config/nvim/init.vim
   else
-    success 'skipped nvim'
+    success 'skipped neovim'
   fi
 }
 

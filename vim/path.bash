@@ -1,4 +1,4 @@
-nvim_path=$HOME/squashfs-root/usr/bin/
+nvim_path=$HOME/squashfs-root/usr/bin
 case ":$PATH:" in
   *":$nvim_path:"*) :;;
   *) PATH="$PATH:$nvim_path";;
