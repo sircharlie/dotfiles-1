@@ -189,11 +189,24 @@ install_git_prompt() {
   fi
 }
 
+install_nvim() {
+  info 'installing neovim...'
+  if [ ! -d "$HOME/squashfs-root" ]; then
+    curl -OLs https://github.com/neovim/neovim/releases/download/v0.4.3/nvim.appimage
+    ./nvim.appimage --appimage-extract &> /dev/null
+    rm ./nvim.appimage
+    fail 'neovim'
+  else
+    success 'skipped nvim'
+  fi
+}
+
 install_software () {
   install_vim
   install_node
   install_vundle
   install_git_prompt
+  install_nvim
 }
 
 setup_gitconfig
