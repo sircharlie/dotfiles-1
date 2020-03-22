@@ -75,6 +75,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'xuyuanp/nerdtree-git-plugin'
+Plugin 'neoclide/coc.nvim'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plugin 'easymotion/vim-easymotion'
@@ -83,7 +84,6 @@ Plugin 'ryanoasis/vim-devicons'
 Plugin 'matze/vim-move'
 Plugin 'morhetz/gruvbox'
 Plugin 'mattn/emmet-vim'
-Plugin 'Chiel92/vim-autoformat'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'nvie/vim-flake8'
 Plugin 'scrooloose/nerdcommenter'
@@ -130,6 +130,8 @@ nmap <C-Down> <Plug>MoveLineDown
 nnoremap <F2> :set invpaste paste?<CR>
 inoremap <C-s> <esc>:w<cr>
 nnoremap <C-s> :w<cr>
+nmap <silent> gd <Plug>(coc-definition)
+nmap <F2> <Plug>(coc-rename)
 
 " fzf file fuzzy search that respects .gitignore
 " If in git directory, show only files that are committed, staged, or unstaged
@@ -138,21 +140,6 @@ nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --excl
 
 set pastetoggle=<F2>
 set showmode
-
-augroup autoformat_settings
-  autocmd FileType bzl AutoFormatBuffer buildifier
-  autocmd FileType c,cpp,proto AutoFormatBuffer clang-format
-  autocmd FileType javascript AutoFormatBuffer prettier
-  autocmd FileType dart AutoFormatBuffer dartfmt
-  autocmd FileType go AutoFormatBuffer gofmt
-  autocmd FileType gn AutoFormatBuffer gn
-  autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
-  autocmd FileType java AutoFormatBuffer google-java-format
-  autocmd FileType python AutoFormatBuffer yapf
-  " Alternative: autocmd FileType python AutoFormatBuffer autopep8
-  autocmd FileType rust AutoFormatBuffer rustfmt
-  autocmd FileType vue AutoFormatBuffer prettier
-augroup END
 
 let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
@@ -179,3 +166,19 @@ if &term =~ '^screen'
     execute "set <xRight>=\e[1;*C"
     execute "set <xLeft>=\e[1;*D"
 endif
+
+"Coc Extensions
+let g:coc_global_extensions = [
+  \ 'coc-angular',
+  \ 'coc-tsserver',
+  \ 'coc-html',
+  \ 'coc-css',
+  \ 'coc-python',
+  \ 'coc-json',
+  \ 'coc-pairs',
+  \ 'coc-snippets',
+  \ 'coc-marketplace',
+  \ 'coc-prettier',
+  \ ]
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
