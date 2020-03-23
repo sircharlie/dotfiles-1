@@ -82,31 +82,18 @@ Plugin 'vim-syntastic/syntastic'
 Plugin 'nvie/vim-flake8'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'google/vim-maktaba'
-Plugin 'google/vim-codefmt'
-Plugin 'google/vim-glaive'
-Plugin 'Vimjas/vim-python-pep8-indent'
 Plugin 'junegunn/fzf.vim'
 Plugin 'junegunn/fzf'
-Plugin 'vim-python/python-syntax'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'vimwiki/vimwiki'
 Plugin 'editorconfig/editorconfig-vim'
-Plugin 'godlygeek/tabular'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'plasticboy/vim-markdown'
 
 call vundle#end()
 
-call glaive#Install()
-
-Glaive codefmt plugin[mappings]
-Glaive codefmt google_java_executable="java -jar /mnt/c/Users/charlie/google-java-format-1.7-all-deps.jar"
-
-"----------------------------------------------------------
 " Mappings
-"
 
 " map folding and unfolding all
 nnoremap <C-]> <Nop>
