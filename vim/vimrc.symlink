@@ -33,7 +33,8 @@ set shiftwidth=2
 set shiftround
 set expandtab
 set completeopt-=preview
-set number
+set nonumber
+set relativenumber
 set linebreak
 
 let g:python_highlight_all = 1
