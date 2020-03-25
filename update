@@ -1,0 +1,4 @@
+cd "$HOME/vimwiki"
+git push
+cd "$HOME/.dotfiles"
+git push
