@@ -32,11 +32,8 @@ esac
 # set colors for directory
 export LS_COLORS='ow=04;31;40:fi=00;33'
 
-# Alias definitions.
-export DOTFILES=$HOME/.dotfiles
-
-# all of our zsh files
-config_files=($DOTFILES/**/*.bash)
+# all of the bash files
+config_files=($HOME/.dotfiles/**/*.bash)
 
 declare -a other_files
 declare -a completion_files
@@ -60,21 +57,22 @@ done
 for file in ${other_files[@]}; do source $file; done
 for file in ${completion_files[@]}; do source $file; done
 
-# PROMPT_COLOR is imported, it has to be placed after config files import
+# both PROMPT_COLOR and PROMPT_NO_COLOR is imported, it has to be placed after config files import
 if [ "$color_prompt" = yes ]; then PS1=$PROMPT_COLOR
 else PS1=$PROMPT_NO_COLOR
 fi
 
+# load bash-git-prompt for git files
 if [ -f "$HOME/.bash-git-prompt/gitprompt.sh" ]; then
     GIT_PROMPT_ONLY_IN_REPO=1
     GIT_PROMPT_FETCH_REMOTE_STATUS=0
-    GIT_PROMPT_THEME=Minimal_Chevron
+    GIT_PROMPT_THEME=Single_line_Dark
     GIT_PROMPT_IGNORE_STASH=1
     source $HOME/.bash-git-prompt/gitprompt.sh
 fi
 
 # avoid re-write of array
-unset color_prompt force_color_prompt other_files completion_files
+unset config_files color_prompt force_color_prompt other_files completion_files
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'

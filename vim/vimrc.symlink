@@ -2,7 +2,6 @@
 " .vimrc of sircharlie
 " ========================
 
-
 " avoid unexpected things that your distro might have made
 set nocompatible
 
@@ -13,14 +12,15 @@ filetype plugin indent on
 " enable syntax highlighting
 syntax on
 
-" highlight searches
-set hlsearch
+set hlsearch " highlight searches
 
 " use case insensitive search, except when using capital letters
 set ignorecase
 set smartcase
+set lazyredraw " redraw only when we need to
 set autoindent
 set showcmd
+set showmatch " highlight matching [{()}]
 set noswapfile
 set nobackup
 set nowritebackup
@@ -95,7 +95,15 @@ Plugin 'plasticboy/vim-markdown'
 call vundle#end()
 
 " Mappings
+
+" move vertically by visual line
+" if there's a long line that gets visually wrapped to two lines
+" j won't skip over it
+nnoremap j gj
+nnoremap k gk
+
 nnoremap <silent><c-s> :<c-u>update<cr>
+nnoremap <leader><space> :nohlsearch<CR>
 vnoremap <silent><c-s> <c-c>:update<cr>gv
 inoremap <silent><c-s> <c-o>:update<cr>
 inoremap <c-z> <c-o>:u<CR>
