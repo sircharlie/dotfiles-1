@@ -2,6 +2,74 @@
 " .vimrc of sircharlie
 " ========================
 
+" plugins
+set rtp+=~/.vim/bundle/Vundle.vim
+
+call vundle#begin()
+
+" Vundle package manager
+Plugin 'VundleVim/Vundle.vim'
+
+" File system explorer
+Plugin 'scrooloose/nerdtree'
+
+" A plugin of NERDTree showing git status flags 
+Plugin 'xuyuanp/nerdtree-git-plugin'
+
+" Show only one NERDTree in all tabs
+Plugin 'jistr/vim-nerdtree-tabs'
+
+" Code-completion engine for vim & neovim
+Plugin 'neoclide/coc.nvim'
+
+" Extra syntax and highlight for nerdtree files
+Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+
+" Support filetype glyphs
+Plugin 'ryanoasis/vim-devicons'
+
+" Navigate using words
+" <Leader><Leader>fo => all 'o' characters wil be highlighted
+" <Leader><Leader>w => all words will be highlighted
+Plugin 'easymotion/vim-easymotion'
+
+" Moves line/selections up/down
+Plugin 'matze/vim-move'
+
+" Theme
+Plugin 'morhetz/gruvbox'
+
+" Emmet for vim
+Plugin 'mattn/emmet-vim'
+
+" Display syntax errors
+Plugin 'vim-syntastic/syntastic'
+
+" comment codes
+Plugin 'preservim/nerdcommenter'
+
+" Navigate seamlessly between vim and tmux splits
+Plugin 'christoomey/vim-tmux-navigator'
+
+" file finder
+Plugin 'junegunn/fzf.vim'
+Plugin 'junegunn/fzf'
+
+" enable multiple selections
+Plugin 'terryma/vim-multiple-cursors'
+
+" notes taking
+Plugin 'vimwiki/vimwiki'
+
+" EditorConfig plugin for vim
+Plugin 'editorconfig/editorconfig-vim'
+
+" cool status for vim
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
+call vundle#end()
+
 " avoid unexpected things that your distro might have made
 set nocompatible
 
@@ -36,10 +104,9 @@ set completeopt-=preview
 set nonumber
 set relativenumber
 set linebreak
+set ttimeoutlen=5
 
 let g:python_highlight_all = 1
-let g:airline_theme='cool'
-let g:airline_powerline_fonts = 1
 let g:ycm_key_list_stop_completion = ['<TAB>']
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
@@ -52,10 +119,31 @@ set clipboard=unnamed
 let g:SimpylFold_docstring_preview=1
 let g:move_map_keys = 0
 
+" NerdTree config
+" ================================
+" Close vim when NERDTree is the only window left
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" vimwiki setup
+" Theme config
+" ==============================
+colorscheme gruvbox
+set background=dark
+
+" Vimwiki config
+" ===============================
 let g:vimwiki_list = [{
   \'path': '~/vimwiki/','syntax': 'markdown','ext': '.md'}]
+
+" Airline config
+" ===============================
+let g:airline#extensions#tabline#enabled = 1
+
+" status bar themes
+" more here: https://github.com/vim-airline/vim-airline-themes/tree/master/autoload/airline/themes
+let g:airline_theme='cool'
+
+" populate airline symbols with powerline symbols
+let g:airline_powerline_fonts = 1
 
 if &term =~ '256color'
     " Disable Background Color Erase (BCE) so that color schemes
@@ -63,39 +151,8 @@ if &term =~ '256color'
     set t_ut=
 endif
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'xuyuanp/nerdtree-git-plugin'
-Plugin 'neoclide/coc.nvim'
-Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plugin 'easymotion/vim-easymotion'
-Plugin 'tpope/vim-fugitive'
-Plugin 'ryanoasis/vim-devicons'
-Plugin 'matze/vim-move'
-Plugin 'morhetz/gruvbox'
-Plugin 'mattn/emmet-vim'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'nvie/vim-flake8'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'junegunn/fzf.vim'
-Plugin 'junegunn/fzf'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'vimwiki/vimwiki'
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'plasticboy/vim-markdown'
-
-call vundle#end()
-
 " Mappings
-
+" =================================
 " move vertically by visual line
 " if there's a long line that gets visually wrapped to two lines
 " j won't skip over it
@@ -146,9 +203,6 @@ nnoremap <silent> <nop> :TmuxNavigatePrevious<cr>
 " NerdTree
 let NERDTreeIgnore=['^node_modules$']
 
-" Theme
-set background=dark
-colorscheme gruvbox
 if &term =~ '^screen'
     " tmux will send xterm-style keys when its xterm-keys option is on
     execute "set <xUp>=\e[1;*A"
