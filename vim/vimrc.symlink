@@ -157,6 +157,9 @@ nnoremap <c-z> :u<CR>
 " remove the highlight on searches
 nnoremap <leader><space> :nohlsearch<CR>
 
+" search word everywhere
+nnoremap <leader>z :Ag<CR>
+
 " map folding and unfolding all
 nnoremap <C-[> zR
 nnoremap <C-]> zM
