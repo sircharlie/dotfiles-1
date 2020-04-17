@@ -15,6 +15,9 @@ call vundle#begin()
 " Vundle package manager
 Plugin 'VundleVim/Vundle.vim'
 
+" practice vim with hardmode
+Plugin 'wikitopian/hardmode'
+
 " tsx syntax highlighting
 Plugin 'ianks/vim-tsx'
 
@@ -75,6 +78,9 @@ Plugin 'editorconfig/editorconfig-vim'
 " cool status for vim
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+
+" add parentheses, brakets, etc. to a block of code
+Plugin 'tpope/vim-surround'
 
 call vundle#end()
 " }}}
