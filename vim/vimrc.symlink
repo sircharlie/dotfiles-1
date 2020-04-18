@@ -175,6 +175,9 @@ nmap <C-Right> <Plug>MoveLineRight
 nmap <C-Left> <Plug>MoveLineLeft
 nmap <C-Down> <Plug>MoveLineDown
 
+" toggle vim hard mode and easy mode
+nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
+
 " paste mode
 nnoremap <F2> :set invpaste paste?<CR>
 
@@ -188,6 +191,10 @@ nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --excl
 " NerdTree config
 " Close vim when NERDTree is the only window left
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" Enable vim hard mode
+" too hard right now :(
+"autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
 
 " Vimwiki config
 let g:vimwiki_list = [{
