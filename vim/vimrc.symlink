@@ -21,6 +21,9 @@ Plugin 'wikitopian/hardmode'
 " tsx syntax highlighting
 Plugin 'ianks/vim-tsx'
 
+" sort lines
+Plugin 'christoomey/vim-sort-motion'
+
 " File system explorer
 Plugin 'scrooloose/nerdtree'
 
