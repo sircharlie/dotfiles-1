@@ -204,7 +204,7 @@ let g:vimwiki_list = [{
   \'path': '~/vimwiki/','syntax': 'markdown','ext': '.md'}]
 
 " Airline config
-let g:airline#extensions#tabline#enabled = 0
+let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_splits = 1
 
 " status bar themes
