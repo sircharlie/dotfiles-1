@@ -268,7 +268,7 @@ endif
 
 " Conquer of Completion
 " Give more space for displaying messages
-set cmdheight=2
+set cmdheight=1
 
 " Having longer updatetime (default is 4000ms) leads to noticeable
 " displays and poor ux
