@@ -68,6 +68,13 @@ if [ -f "$HOME/.bash-git-prompt/gitprompt.sh" ]; then
     GIT_PROMPT_FETCH_REMOTE_STATUS=0
     GIT_PROMPT_THEME=Solarized
     GIT_PROMPT_IGNORE_STASH=1
+		GIT_PROMPT_STAGED="✔️"
+		GIT_PROMPT_CONFLICTS="🔥"
+		GIT_PROMPT_CHANGED="✏️"
+		GIT_PROMPT_UNTRACKED="🤔"
+		GIT_PROMPT_STASHED="📦"
+		GIT_PROMPT_CLEAN="🆗"
+		GIT_PROMPT_SYMBOLS_NO_REMOTE_TRACKING=" 🔒 " # Displayed for untracked brances
     source $HOME/.bash-git-prompt/gitprompt.sh
 fi
 
