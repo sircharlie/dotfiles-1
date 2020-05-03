@@ -182,10 +182,11 @@ nnoremap <C-]> zM
 
 " create a new tab and close a tab
 nnoremap <C-t> :tabnew<CR>
-nnoremap <C-w> :tabclose<CR>
 
 " map Toggle NERDTree
 map <C-\> :NERDTreeTabsToggle<CR>
+
+nnoremap <leader>p :Prettier<CR>
 
 " Go to tab by number
 noremap <leader>1 1gt
