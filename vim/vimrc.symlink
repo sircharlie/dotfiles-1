@@ -1,12 +1,13 @@
-" _______ _________ _______  _______           _______  _______  _       _________ _______ 
-"(  ____ \\__   __/(  ____ )(  ____ \|\     /|(  ___  )(  ____ )( \      \__   __/(  ____ \
-"| (    \/   ) (   | (    )|| (    \/| )   ( || (   ) || (    )|| (         ) (   | (    \/
-"| (_____    | |   | (____)|| |      | (___) || (___) || (____)|| |         | |   | (__    
-"(_____  )   | |   |     __)| |      |  ___  ||  ___  ||     __)| |         | |   |  __)   
-      ") |   | |   | (\ (   | |      | (   ) || (   ) || (\ (   | |         | |   | (      
-"/\____) |___) (___| ) \ \__| (____/\| )   ( || )   ( || ) \ \__| (____/\___) (___| (____/\
-"\_______)\_______/|/   \__/(_______/|/     \||/     \||/   \__/(_______/\_______/(_______/
-"                                                                                          
+"            _              
+"           | |             
+"  ___ _   _| | _____   ___ 
+" / __| | | | |/ / _ \ / _ \
+" | (__| |_| |   < (_) |  __/
+" \___|\__, |_|\_\___/ \___|
+"       __/ |               
+"      |___/                
+"
+let mapleader = '\'
 " External {{{
 try
   source ~/.external.vim
@@ -119,6 +120,7 @@ colorscheme gruvbox " change color scheme
 set background=dark " self-explanatory
 set cursorline " highlight the current line under cursor
 set nonumber
+set numberwidth=2
 set relativenumber
 
 " Text Rendering options
@@ -221,13 +223,17 @@ nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --excl
 " }}}
 " Plugins Options {{{
 "
-" NerdTree config
 " Close vim when NERDTree is the only window left
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup close_nerd_tree
+  autocmd!
+  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup end
 
 " Enable vim hard mode
-" too hard right now :(
-"autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
+"augroup hard_mode
+  "autocmd!
+  "autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
+"augroup end
 
 " Vimwiki config
 let g:vimwiki_list = [{
@@ -256,7 +262,10 @@ endif
 
 " emmet
 let g:user_emmet_install_global = 0
-autocmd FileType html,css EmmetInstall
+augroup enable_emmet
+  autocmd!
+  autocmd FileType html,css,jsx EmmetInstall
+augroup end  
 
 " tmux
 let g:tmux_navigator_no_mappings = 1
@@ -355,7 +364,10 @@ function! s:show_documentation()
 endfunction
 
 " Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
+augroup highlight_group
+  autocmd!
+  autocmd CursorHold * silent call CocActionAsync('highlight')
+augroup end  
 
 " Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
@@ -411,5 +423,67 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 let g:ackprg = 'ag --nogroup --nocolor --column'
 " }}}
-"
+" Learn {{{
+" Move the current line down
+nnoremap - ddp
+
+" Move the current line up
+nnoremap _ ddkP
+
+" Convert the current word to uppercase in insert mode
+inoremap <c-u> <esc>viwUi
+
+" Convert the current word to uppercase in normal mode
+nnoremap <c-u> viwU
+
+" Define leader key
+let mapleader = "\\"
+
+" Edit the vimrc file
+nnoremap <leader>ev :vsplit ~/.dotfiles/vim/vimrc.symlink<cr>
+
+" Source the vimrc file
+nnoremap <leader>sv :source ~/.vimrc<cr>
+
+" Some abbreviations
+iabbrev @@ esculin.hao@gmail.com
+iabbrev ccopy Copyright 2020 Cykoe, all rights reserved
+iabbrev waht what
+iabbrev tehn then
+iabbrev whaat what
+
+" Surround a word with double quotes
+nnoremap <leader>" viw<esc>a"<esc>bi"<esc>lel
+
+" Surround a word with single quotes
+nnoremap <leader>' viw<esc>a'<esc>bi'<esc>lel
+
+" Move to the beginning of the line
+nnoremap H 0
+
+" Move to the end of the line
+nnoremap L $
+
+" Map escape to jk
+inoremap jk <esc>
+
+" Disable esc
+inoremap <esc> <nop>
+
+" Operator-pending for inside a parentheses
+onoremap p i(
+set backspace=indent,eol,start
+
+augroup markdown
+  autocmd!
+  autocmd FileType md onoremap ih :<c-u>execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"<cr>
+augroup end
+" Common to pair BufRead and BufNewFile
+
+onoremap ih :<c-u>execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"<cr>
+
+" Add a semicolon to the end of the line
+nnoremap <leader>; mqA;<esc>`q
+
+" }}}
 " vim:foldmethod=marker:foldlevel=0
