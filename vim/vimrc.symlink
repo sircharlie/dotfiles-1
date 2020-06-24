@@ -136,43 +136,44 @@ inoremap jk <esc>
 inoremap <esc> <nop>
 " }}}
 " Mappings (normal){{{
- " move down by visual line
+
+" move down by visual line
 nnoremap j gj
 
- " move up by visual line
+" move up by visual line
 nnoremap k gk
 
- " press ctrl+s to save
+" press ctrl+s to save
 nnoremap <c-s> :w<cr>
 
- " press ctrl+z to undo
+" press ctrl+z to undo
 nnoremap <c-z> :u<cr>
 
- " remove the highlight on searches
+" remove the highlight on searches
 nnoremap <leader><space> :nohlsearch<cr>
 
- " search word everywhere inside the opened folder
+" search word everywhere inside the opened folder
 nnoremap <leader>z :Ag<cr>
 
- " unfold all
+" unfold all
 nnoremap <c-[> zR
 
- " fold all
+" fold all
 nnoremap <c-]> zM
 
- " create a new tab
+" create a new tab
 nnoremap <c-t> :tabnew<cr>
 
- " toggle NERDTree
+" toggle NERDTree
 nnoremap <c-\> :NERDTreeTabsToggle<cr>
 
- " toggle Prettier
+" toggle Prettier
 nnoremap <leader>p :Prettier<cr>
 
- " go to the last active tab
+" go to the last active tab
 nnoremap <leader>0 :tablast<cr>
 
- " go to the numbered tab which is 1-based
+" go to the numbered tab which is 1-based
 nnoremap <leader>1 1gt
 nnoremap <leader>2 2gt
 nnoremap <leader>3 3gt
@@ -183,10 +184,10 @@ nnoremap <leader>7 7gt
 nnoremap <leader>8 8gt
 nnoremap <leader>9 9gt
 
- " toggle vim hard mode and easy mode
+" toggle vim hard mode and easy mode
 nnoremap <leader>h :call ToggleHardMode()<cr>
 
- " paste mode
+" paste mode
 nnoremap <F2> :set invpaste paste?<CR>
 
 " fzf file fuzzy search that respects .gitignore
@@ -221,19 +222,42 @@ nnoremap <leader>; mqA;<esc>`q
 " Remove trailing whitespaces
 nnoremap <leader>t :call TrimTrailingWhiteSpaces()<cr>
 " }}}
-" Plugins Options {{{
-"
+" Autocommands {{{
+
 " Close vim when NERDTree is the only window left
 augroup close_nerd_tree
   autocmd!
   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 augroup end
 
-" Enable vim hard mode
-"augroup hard_mode
-  "autocmd!
-  "autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
-"augroup end
+" Enable vim hard mode during start-up
+augroup hard_mode
+  autocmd!
+  autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
+augroup end
+
+" Enable emmet and make mapping works for selected file types
+let g:user_emmet_install_global = 0
+augroup enable_emmet
+  autocmd!
+  autocmd FileType html,css,jsx,js EmmetInstall
+augroup end
+
+" Highlight the symbol and its references when holding the cursor.
+augroup highlight_group
+  autocmd!
+  autocmd CursorHold * silent call CocActionAsync('highlight')
+augroup end
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+" }}}
+" Plugins {{{
 
 " Vimwiki config
 let g:vimwiki_list = [{
@@ -260,12 +284,6 @@ if &term =~ '256color'
     set t_ut=
 endif
 
-" emmet
-let g:user_emmet_install_global = 0
-augroup enable_emmet
-  autocmd!
-  autocmd FileType html,css,jsx EmmetInstall
-augroup end
 
 " tmux
 let g:tmux_navigator_no_mappings = 1
@@ -363,23 +381,9 @@ function! s:show_documentation()
   endif
 endfunction
 
-" Highlight the symbol and its references when holding the cursor.
-augroup highlight_group
-  autocmd!
-  autocmd CursorHold * silent call CocActionAsync('highlight')
-augroup end
-
 " Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
 
 " coc-rename
 nmap <leader>rn <Plug>(coc-rename)V
