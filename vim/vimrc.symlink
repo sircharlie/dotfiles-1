@@ -107,11 +107,24 @@ set clipboard=unnamed " connect to system clipboard
 set modelines=1 " run specific commands in a file on the first and last line of .vimrc
 set pastetoggle=<F2> " toggle paste mode for texts from external application
 " }}}
-" Mappings {{{
-
-" Editing/deleting from current cursor till the end
-onoremap L $
-
+" Mappings (operator-pending){{{
+onoremap L $| " from current cursor till the end
+onoremap p i(| " inside parentheses
+onoremap p i[| " inside braces
+onoremap p i{| " inside brackets
+onoremap ih :<c-u>execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"<cr>| " contents under a markdown header
+" }}}
+" Mappings (insert){{{
+"
+"
+"
+" }}}
+" Mappings (visual){{{
+"
+"
+"
+" }}}
+" Mappings (normal){{{
 " move vertically by visual line
 nnoremap j gj
 nnoremap k gk
@@ -422,8 +435,6 @@ inoremap jk <esc>
 " Disable esc
 inoremap <esc> <nop>
 
-" Operator-pending for inside a parentheses
-onoremap p i(
 set backspace=indent,eol,start
 
 augroup markdown
@@ -432,7 +443,6 @@ augroup markdown
 augroup end
 " Common to pair BufRead and BufNewFile
 
-onoremap ih :<c-u>execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"<cr>
 
 " Add a semicolon to the end of the line
 nnoremap <leader>; mqA;<esc>`q
