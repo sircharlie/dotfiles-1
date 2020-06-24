@@ -1,11 +1,11 @@
-"            _              
-"           | |             
-"  ___ _   _| | _____   ___ 
+"            _
+"           | |
+"  ___ _   _| | _____   ___
 " / __| | | | |/ / _ \ / _ \
 " | (__| |_| |   < (_) |  __/
 " \___|\__, |_|\_\___/ \___|
-"       __/ |               
-"      |___/                
+"       __/ |
+"      |___/
 "
 let mapleader = '\'
 " External {{{
@@ -15,6 +15,13 @@ catch
 endtry
 " }}}
 " Plugin List {{{
+" Required for Vundle
+set nocompatible
+
+" Required for Vundle
+filetype off
+
+" Required for Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
 
 call vundle#begin()
@@ -34,7 +41,7 @@ Plugin 'christoomey/vim-sort-motion'
 " File system explorer
 Plugin 'scrooloose/nerdtree'
 
-" A plugin of NERDTree showing git status flags 
+" A plugin of NERDTree showing git status flags
 Plugin 'xuyuanp/nerdtree-git-plugin'
 
 " Show only one NERDTree in all tabs
@@ -93,42 +100,48 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-surround'
 
 call vundle#end()
+
+" Required for vundle
+filetype plugin indent on
 " }}}
 " Vim options {{{
-" Indention options
-filetype plugin indent on " allow intelligent auto-indenting for each filetype
-set tabstop=2 " spaces number when tabbing
-set shiftwidth=2 " spaces number when shifting
-set shiftround " round the indentation to nearest multiple of shiftwidth
-set autoindent " new lines inherit the indentaton of previous lines
-set expandtab " convert tabs to spaces
+"
+" Tab options
+set tabstop=2 " set spaces numbers for tabbing
+set expandtab " converts tabs to spaces
 
-" Search options
-set hlsearch " highlight searches
-set ignorecase " ignore case when searching
-set smartcase " switch to case-sensitive when search has uppercase
+" Shifting options
+set shiftwidth=2 " set spaces when shifting
+set shiftround " rounds the indentation to nearest multiple of shiftwidth
+
+" Searching options
+set hlsearch " highlights searches
+set ignorecase " ignore cases when searching
+set smartcase " intelligent switch to case-sensitive when uppercase typed
+set showmatch " highlights matching parentheses, braces, and brackets
 
 " Performance options
 set lazyredraw " don't update screen during macro and script execution
-set noshowcmd " show vim commands on the bottom-right corner
-set showmatch " highlight matching [{()}]
-
-" User interface options
-set wildmenu " gui for suggestion in vim auto-completion
-set ruler " show cursor position
-colorscheme gruvbox " change color scheme
-set background=dark " self-explanatory
+set noshowcmd " hide commands on the bottom-right corner
 set cursorline " highlight the current line under cursor
-set nonumber
-set numberwidth=2
-set relativenumber
+
+" Line-number options
+set nonumber " disable absolute line numbers
+set relativenumber " use relative numbers in terms of current line
+set numberwidth=2 " set line number column width (increase by 2)
+
+" Color scheme
+" Avaible schemes include: gruvbox and material
+colorscheme gruvbox
+set background=dark " Use dark scehem
 
 " Text Rendering options
+syntax enable " enable syntax highlighting
 set encoding=utf-8 " supports unicode
 set linebreak " avoid wrapping a line in the middle of a word
 set scrolloff=1 " number of lines below the cursor
-syntax enable " enable syntax highlighting
 set wrap " enable line wrapping
+set autoindent " new lines inherit the indentaton of previous lines
 
 " Code Folding options
 set foldenable " enable folding
@@ -140,7 +153,6 @@ set foldmethod=indent " fold based on indention levels
 set confirm " ask before closing an unsaved file
 set hidden " hide files in background, needed by TextEdit
 set history=50 " undo limit
-set nocompatible " avoid unexpected things that your distro might have made
 set nobackup " no backup :)
 set nowritebackup " no backup :)
 set noswapfile " no backup :)
@@ -148,9 +160,7 @@ set completeopt-=preview " close auto-completion preview for coc
 set ttimeoutlen=50 " time in milliseconds to wait for a key code sequence to complete
 set clipboard=unnamed " connect to system clipboard
 set modelines=1 " run specific commands in a file on the first and last line of .vimrc
-
-set pastetoggle=<F2>
-set showmode
+set pastetoggle=<F2> " toggle paste mode for texts from external application
 
 " enable true colors in vim under tmux
 if exists('+termguicolors')
@@ -160,6 +170,10 @@ if exists('+termguicolors')
 endif
 " }}}
 " Mappings {{{
+
+" Editing/deleting from current cursor till the end
+onoremap L $
+
 " move vertically by visual line
 nnoremap j gj
 nnoremap k gk
@@ -202,7 +216,7 @@ noremap <leader>8 8gt
 noremap <leader>9 9gt
 noremap <leader>0 :tablast<cr>
 
-" mapping for vim-move 
+" mapping for vim-move
 vmap <C-Down> <Plug>MoveBlockDown
 vmap <C-Up> <Plug>MoveBlockUp
 nmap <C-Up> <Plug>MoveLineUp
@@ -265,7 +279,7 @@ let g:user_emmet_install_global = 0
 augroup enable_emmet
   autocmd!
   autocmd FileType html,css,jsx EmmetInstall
-augroup end  
+augroup end
 
 " tmux
 let g:tmux_navigator_no_mappings = 1
@@ -367,7 +381,7 @@ endfunction
 augroup highlight_group
   autocmd!
   autocmd CursorHold * silent call CocActionAsync('highlight')
-augroup end  
+augroup end
 
 " Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
@@ -484,6 +498,15 @@ onoremap ih :<c-u>execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"<cr>
 
 " Add a semicolon to the end of the line
 nnoremap <leader>; mqA;<esc>`q
+
+" Highlight trailing whitespaces
+match Error /\v +$/
+
+function! TrimTrailingWhiteSpaces()
+  :%s/\s\+$//e
+endfunction
+
+nnoremap <leader>t :call TrimTrailingWhiteSpaces()<cr>
 
 " }}}
 " vim:foldmethod=marker:foldlevel=0
