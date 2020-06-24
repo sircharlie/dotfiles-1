@@ -1,4 +1,3 @@
-" Cykoe's personal vim settings
 "            _
 "           | |
 "  ___ _   _| | _____   ___
@@ -7,7 +6,8 @@
 " \___|\__, |_|\_\___/ \___|
 "       __/ |
 "      |___/
-"
+" Cykoe's personal vim settings
+" =============================
 " Plugins (Vundle) {{{
 " Required for Vundle
 set nocompatible
@@ -110,14 +110,11 @@ set pastetoggle=<F2> " toggle paste mode for texts from external application
 " Mappings (operator-pending){{{
 onoremap L $| " from current cursor till the end
 onoremap p i(| " inside parentheses
-onoremap p i[| " inside braces
-onoremap p i{| " inside brackets
 onoremap ih :<c-u>execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"<cr>| " contents under a markdown header
 " }}}
 " Mappings (insert){{{
-"
-"
-"
+inoremap <c-s> <esc>:w<cr>| " press ctrl+s save
+inoremap <c-z> <c-o>:u<cr>| " press ctrl+z to undo
 " }}}
 " Mappings (visual){{{
 "
@@ -125,62 +122,29 @@ onoremap ih :<c-u>execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"<cr>| " contents 
 "
 " }}}
 " Mappings (normal){{{
-" move vertically by visual line
-nnoremap j gj
-nnoremap k gk
-
-" press ctrl+s saves the file
-inoremap <C-s> <esc>:w<cr>
-nnoremap <C-s> :w<cr>
-
-" press ctrl+z undo
-inoremap <c-z> <c-o>:u<CR>
-nnoremap <c-z> :u<CR>
-
-" remove the highlight on searches
-nnoremap <leader><space> :nohlsearch<CR>
-
-" search word everywhere
-nnoremap <leader>z :Ag<CR>
-
-" map folding and unfolding all
-nnoremap <C-[> zR
-nnoremap <C-]> zM
-
-" create a new tab and close a tab
-nnoremap <C-t> :tabnew<CR>
-
-" map Toggle NERDTree
-map <C-\> :NERDTreeTabsToggle<CR>
-
-nnoremap <leader>p :Prettier<CR>
-
-" Go to tab by number
-noremap <leader>1 1gt
-noremap <leader>2 2gt
-noremap <leader>3 3gt
-noremap <leader>4 4gt
-noremap <leader>5 5gt
-noremap <leader>6 6gt
-noremap <leader>7 7gt
-noremap <leader>8 8gt
-noremap <leader>9 9gt
-noremap <leader>0 :tablast<cr>
-
-" mapping for vim-move
-vmap <C-Down> <Plug>MoveBlockDown
-vmap <C-Up> <Plug>MoveBlockUp
-nmap <C-Up> <Plug>MoveLineUp
-nmap <C-Right> <Plug>MoveLineRight
-nmap <C-Left> <Plug>MoveLineLeft
-nmap <C-Down> <Plug>MoveLineDown
-
-" toggle vim hard mode and easy mode
-nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
-
-" paste mode
-nnoremap <F2> :set invpaste paste?<CR>
-
+nnoremap j gj| " move down by visual line
+nnoremap k gk| " move up by visual line
+nnoremap <c-s> :w<cr>| " press ctrl+s to save
+nnoremap <c-z> :u<cr>| " press ctrl+z to undo
+nnoremap <leader><space> :nohlsearch<cr>| " remove the highlight on searches
+nnoremap <leader>z :Ag<cr>| " search word everywhere inside the opened folder
+nnoremap <c-[> zR| " unfold all
+nnoremap <c-]> zM| " fold all
+nnoremap <c-t> :tabnew<cr>| " create a new tab
+nnoremap <c-\> :NERDTreeTabsToggle<cr>| " toggle NERDTree
+nnoremap <leader>p :Prettier<cr>| " toggle Prettier
+nnoremap <leader>0 :tablast<cr>| " go to the last active tab
+nnoremap <leader>1 1gt| " go to the numbered tab which is 1-based
+nnoremap <leader>2 2gt
+nnoremap <leader>3 3gt
+nnoremap <leader>4 4gt
+nnoremap <leader>5 5gt
+nnoremap <leader>6 6gt
+nnoremap <leader>7 7gt
+nnoremap <leader>8 8gt
+nnoremap <leader>9 9gt
+nnoremap <leader>h :call ToggleHardMode()<cr>| " toggle vim hard mode and easy mode
+nnoremap <F2> :set invpaste paste?<CR>| " paste mode
 " fzf file fuzzy search that respects .gitignore
 " If in git directory, show only files that are committed, staged, or unstaged
 " else use regular :Files
@@ -458,7 +422,7 @@ nnoremap <leader>t :call TrimTrailingWhiteSpaces()<cr>
 
 " }}}
 " Themes {{{
-let g:material_theme_style="ocean" " default | palenight | ocean | lighter | darker
+let g:material_theme_style="palenight" " default | palenight | ocean | lighter | darker
 colorscheme material " must put after the above line or style will be overrided
 
 " enable true colors
