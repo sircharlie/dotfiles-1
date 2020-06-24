@@ -108,33 +108,72 @@ set modelines=1 " run specific commands in a file on the first and last line of 
 set pastetoggle=<F2> " toggle paste mode for texts from external application
 " }}}
 " Mappings (operator-pending){{{
-onoremap L $| " from current cursor till the end
-onoremap p i(| " inside parentheses
-onoremap ih :<c-u>execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"<cr>| " contents under a markdown header
+
+" from current cursor till the end
+onoremap L $
+
+" inside parentheses
+onoremap p i(
+
+" contents under a markdown header
+onoremap ih :<c-u>execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"<cr>
 " }}}
 " Mappings (insert){{{
-inoremap <c-s> <esc>:w<cr>| " press ctrl+s save
-inoremap <c-z> <c-o>:u<cr>| " press ctrl+z to undo
-" }}}
-" Mappings (visual){{{
-"
-"
-"
+
+" press ctrl+s save
+inoremap <c-s> <esc>:w<cr>
+
+" press ctrl+z to undo
+inoremap <c-z> <c-o>:u<cr>
+
+" convert the current word to uppercase
+inoremap <c-u> <c-o>viwU
+
+" map escape to jk
+inoremap jk <esc>
+
+" disable esc
+inoremap <esc> <nop>
 " }}}
 " Mappings (normal){{{
-nnoremap j gj| " move down by visual line
-nnoremap k gk| " move up by visual line
-nnoremap <c-s> :w<cr>| " press ctrl+s to save
-nnoremap <c-z> :u<cr>| " press ctrl+z to undo
-nnoremap <leader><space> :nohlsearch<cr>| " remove the highlight on searches
-nnoremap <leader>z :Ag<cr>| " search word everywhere inside the opened folder
-nnoremap <c-[> zR| " unfold all
-nnoremap <c-]> zM| " fold all
-nnoremap <c-t> :tabnew<cr>| " create a new tab
-nnoremap <c-\> :NERDTreeTabsToggle<cr>| " toggle NERDTree
-nnoremap <leader>p :Prettier<cr>| " toggle Prettier
-nnoremap <leader>0 :tablast<cr>| " go to the last active tab
-nnoremap <leader>1 1gt| " go to the numbered tab which is 1-based
+ " move down by visual line
+nnoremap j gj
+
+ " move up by visual line
+nnoremap k gk
+
+ " press ctrl+s to save
+nnoremap <c-s> :w<cr>
+
+ " press ctrl+z to undo
+nnoremap <c-z> :u<cr>
+
+ " remove the highlight on searches
+nnoremap <leader><space> :nohlsearch<cr>
+
+ " search word everywhere inside the opened folder
+nnoremap <leader>z :Ag<cr>
+
+ " unfold all
+nnoremap <c-[> zR
+
+ " fold all
+nnoremap <c-]> zM
+
+ " create a new tab
+nnoremap <c-t> :tabnew<cr>
+
+ " toggle NERDTree
+nnoremap <c-\> :NERDTreeTabsToggle<cr>
+
+ " toggle Prettier
+nnoremap <leader>p :Prettier<cr>
+
+ " go to the last active tab
+nnoremap <leader>0 :tablast<cr>
+
+ " go to the numbered tab which is 1-based
+nnoremap <leader>1 1gt
 nnoremap <leader>2 2gt
 nnoremap <leader>3 3gt
 nnoremap <leader>4 4gt
@@ -143,12 +182,44 @@ nnoremap <leader>6 6gt
 nnoremap <leader>7 7gt
 nnoremap <leader>8 8gt
 nnoremap <leader>9 9gt
-nnoremap <leader>h :call ToggleHardMode()<cr>| " toggle vim hard mode and easy mode
-nnoremap <F2> :set invpaste paste?<CR>| " paste mode
+
+ " toggle vim hard mode and easy mode
+nnoremap <leader>h :call ToggleHardMode()<cr>
+
+ " paste mode
+nnoremap <F2> :set invpaste paste?<CR>
+
 " fzf file fuzzy search that respects .gitignore
 " If in git directory, show only files that are committed, staged, or unstaged
 " else use regular :Files
 nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
+
+" Convert the current word to uppercase in normal mode
+nnoremap <c-u> viwU
+
+" Edit the vimrc file
+nnoremap <leader>ev :vsplit ~/.dotfiles/vim/vimrc.symlink<cr>
+
+" Source the vimrc file
+nnoremap <leader>sv :source ~/.vimrc<cr>
+
+" Surround a word with double quotes
+nnoremap <leader>" viw<esc>a"<esc>bi"<esc>lel
+
+" Surround a word with single quotes
+nnoremap <leader>' viw<esc>a'<esc>bi'<esc>lel
+
+" Move to the beginning of the line
+nnoremap H 0
+
+" Move to the end of the line
+nnoremap L $
+
+" Add a semicolon to the end of the line
+nnoremap <leader>; mqA;<esc>`q
+
+" Remove trailing whitespaces
+nnoremap <leader>t :call TrimTrailingWhiteSpaces()<cr>
 " }}}
 " Plugins Options {{{
 "
@@ -352,74 +423,17 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 let g:ackprg = 'ag --nogroup --nocolor --column'
 " }}}
-" Learn {{{
-" Move the current line down
-nnoremap - ddp
-
-" Move the current line up
-nnoremap _ ddkP
-
-" Convert the current word to uppercase in insert mode
-inoremap <c-u> <esc>viwUi
-
-" Convert the current word to uppercase in normal mode
-nnoremap <c-u> viwU
-
-" Define leader key
-let mapleader = "\\"
-
-" Edit the vimrc file
-nnoremap <leader>ev :vsplit ~/.dotfiles/vim/vimrc.symlink<cr>
-
-" Source the vimrc file
-nnoremap <leader>sv :source ~/.vimrc<cr>
-
-" Some abbreviations
+" Abbreviations {{{
 iabbrev @@ esculin.hao@gmail.com
 iabbrev ccopy Copyright 2020 Cykoe, all rights reserved
 iabbrev waht what
 iabbrev tehn then
 iabbrev whaat what
-
-" Surround a word with double quotes
-nnoremap <leader>" viw<esc>a"<esc>bi"<esc>lel
-
-" Surround a word with single quotes
-nnoremap <leader>' viw<esc>a'<esc>bi'<esc>lel
-
-" Move to the beginning of the line
-nnoremap H 0
-
-" Move to the end of the line
-nnoremap L $
-
-" Map escape to jk
-inoremap jk <esc>
-
-" Disable esc
-inoremap <esc> <nop>
-
-set backspace=indent,eol,start
-
-augroup markdown
-  autocmd!
-  autocmd FileType md onoremap ih :<c-u>execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"<cr>
-augroup end
-" Common to pair BufRead and BufNewFile
-
-
-" Add a semicolon to the end of the line
-nnoremap <leader>; mqA;<esc>`q
-
-" Highlight trailing whitespaces
-match Error /\v +$/
-
+"}}}
+" Functions {{{
 function! TrimTrailingWhiteSpaces()
   :%s/\s\+$//e
 endfunction
-
-nnoremap <leader>t :call TrimTrailingWhiteSpaces()<cr>
-
 " }}}
 " Themes {{{
 let g:material_theme_style="palenight" " default | palenight | ocean | lighter | darker
@@ -431,6 +445,9 @@ if exists('+termguicolors')
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   set termguicolors
 endif
+
+" Highlight trailing whitespaces
+match Error /\v +$/
 "}}}
 " External (for ignored uploaded settings){{{
 try
