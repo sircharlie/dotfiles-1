@@ -7,13 +7,6 @@
 "       __/ |
 "      |___/
 "
-let mapleader = '\'
-" External {{{
-try
-  source ~/.external.vim
-catch
-endtry
-" }}}
 " Plugin List {{{
 " Required for Vundle
 set nocompatible
@@ -31,6 +24,8 @@ Plugin 'VundleVim/Vundle.vim'
 
 " practice vim with hardmode
 Plugin 'wikitopian/hardmode'
+
+Plugin 'kaicataldo/material.vim'
 
 " tsx syntax highlighting
 Plugin 'ianks/vim-tsx'
@@ -63,9 +58,6 @@ Plugin 'easymotion/vim-easymotion'
 
 " Moves line/selections up/down
 Plugin 'matze/vim-move'
-
-" Theme
-Plugin 'morhetz/gruvbox'
 
 " Emmet for vim
 Plugin 'mattn/emmet-vim'
@@ -104,8 +96,10 @@ call vundle#end()
 " Required for vundle
 filetype plugin indent on
 " }}}
-" Vim options {{{
-"
+" Options {{{
+
+let mapleader = '\' " set the leader key
+
 " Tab options
 set tabstop=2 " set spaces numbers for tabbing
 set expandtab " converts tabs to spaces
@@ -129,11 +123,6 @@ set cursorline " highlight the current line under cursor
 set nonumber " disable absolute line numbers
 set relativenumber " use relative numbers in terms of current line
 set numberwidth=2 " set line number column width (increase by 2)
-
-" Color scheme
-" Avaible schemes include: gruvbox and material
-colorscheme gruvbox
-set background=dark " Use dark scehem
 
 " Text Rendering options
 syntax enable " enable syntax highlighting
@@ -161,13 +150,6 @@ set ttimeoutlen=50 " time in milliseconds to wait for a key code sequence to com
 set clipboard=unnamed " connect to system clipboard
 set modelines=1 " run specific commands in a file on the first and last line of .vimrc
 set pastetoggle=<F2> " toggle paste mode for texts from external application
-
-" enable true colors in vim under tmux
-if exists('+termguicolors')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  set termguicolors
-endif
 " }}}
 " Mappings {{{
 
@@ -508,5 +490,22 @@ endfunction
 
 nnoremap <leader>t :call TrimTrailingWhiteSpaces()<cr>
 
+" }}}
+" Themes {{{
+let g:material_theme_style="ocean" " default | palenight | ocean | lighter | darker
+colorscheme material " must put after the above line or style will be overrided
+
+" enable true colors
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+"}}}
+" External (for ignored uploaded settings){{{
+try
+  source ~/.external.vim
+catch
+endtry
 " }}}
 " vim:foldmethod=marker:foldlevel=0
