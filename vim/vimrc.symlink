@@ -21,9 +21,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim' " vundle package manager
-Plugin 'wikitopian/hardmode' " practice vim with hardmode
 Plugin 'kaicataldo/material.vim' " material theme
-Plugin 'ianks/vim-tsx' " tsx syntax highlighting
 Plugin 'christoomey/vim-sort-motion' " sort lines based alphabetically
 Plugin 'scrooloose/nerdtree' " file system explorer
 Plugin 'xuyuanp/nerdtree-git-plugin' " show git status flags in NERDTree
@@ -52,212 +50,7 @@ call vundle#end()
 " Required for vundle
 filetype plugin indent on
 " }}}
-" Options {{{
-
-let mapleader = '\' " set the leader key
-
-" Tab options
-set tabstop=2 " set spaces numbers for tabbing
-set expandtab " converts tabs to spaces
-
-" Shifting options
-set shiftwidth=2 " set spaces when shifting
-set shiftround " rounds the indentation to nearest multiple of shiftwidth
-
-" Searching options
-set hlsearch " highlights searches
-set ignorecase " ignore cases when searching
-set smartcase " intelligent switch to case-sensitive when uppercase typed
-set showmatch " highlights matching parentheses, braces, and brackets
-
-" Performance options
-set lazyredraw " don't update screen during macro and script execution
-set noshowcmd " hide commands on the bottom-right corner
-set cursorline " highlight the current line under cursor
-
-" Line-number options
-set nonumber " disable absolute line numbers
-set relativenumber " use relative numbers in terms of current line
-set numberwidth=2 " set line number column width (increase by 2)
-
-" Text Rendering options
-syntax enable " enable syntax highlighting
-set encoding=utf-8 " supports unicode
-set linebreak " avoid wrapping a line in the middle of a word
-set scrolloff=1 " number of lines below the cursor
-set wrap " enable line wrapping
-set autoindent " new lines inherit the indentaton of previous lines
-
-" Code Folding options
-set foldenable " enable folding
-set foldlevelstart=10 " open most folds by default
-set foldnestmax=10 " avoid nested folds
-set foldmethod=indent " fold based on indention levels
-
-" Miscellaneous options
-set confirm " ask before closing an unsaved file
-set hidden " hide files in background, needed by TextEdit
-set history=50 " undo limit
-set nobackup " no backup :)
-set nowritebackup " no backup :)
-set noswapfile " no backup :)
-set completeopt-=preview " close auto-completion preview for coc
-set ttimeoutlen=50 " time in milliseconds to wait for a key code sequence to complete
-set clipboard=unnamed " connect to system clipboard
-set modelines=1 " run specific commands in a file on the first and last line of .vimrc
-set pastetoggle=<F2> " toggle paste mode for texts from external application
-" }}}
-" Mappings (operator-pending){{{
-
-" from current cursor till the end
-onoremap L $
-
-" inside parentheses
-onoremap p i(
-
-" contents under a markdown header
-onoremap ih :<c-u>execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"<cr>
-" }}}
-" Mappings (insert){{{
-
-" press ctrl+s save
-inoremap <c-s> <esc>:w<cr>
-
-" press ctrl+z to undo
-inoremap <c-z> <c-o>:u<cr>
-
-" convert the current word to uppercase
-inoremap <c-u> <c-o>viwU
-
-" map escape to jk
-inoremap jk <esc>
-
-" disable esc
-inoremap <esc> <nop>
-" }}}
-" Mappings (normal){{{
-
-" move down by visual line
-nnoremap j gj
-
-" move up by visual line
-nnoremap k gk
-
-" press ctrl+s to save
-nnoremap <c-s> :w<cr>
-
-" press ctrl+z to undo
-nnoremap <c-z> :u<cr>
-
-" remove the highlight on searches
-nnoremap <leader><space> :nohlsearch<cr>
-
-" search word everywhere inside the opened folder
-nnoremap <leader>z :Ag<cr>
-
-" unfold all
-nnoremap <c-[> zR
-
-" fold all
-nnoremap <c-]> zM
-
-" create a new tab
-nnoremap <c-t> :tabnew<cr>
-
-" toggle NERDTree
-nnoremap <c-\> :NERDTreeTabsToggle<cr>
-
-" toggle Prettier
-nnoremap <leader>p :Prettier<cr>
-
-" go to the last active tab
-nnoremap <leader>0 :tablast<cr>
-
-" go to the numbered tab which is 1-based
-nnoremap <leader>1 1gt
-nnoremap <leader>2 2gt
-nnoremap <leader>3 3gt
-nnoremap <leader>4 4gt
-nnoremap <leader>5 5gt
-nnoremap <leader>6 6gt
-nnoremap <leader>7 7gt
-nnoremap <leader>8 8gt
-nnoremap <leader>9 9gt
-
-" toggle vim hard mode and easy mode
-nnoremap <leader>h :call ToggleHardMode()<cr>
-
-" paste mode
-nnoremap <F2> :set invpaste paste?<CR>
-
-" fzf file fuzzy search that respects .gitignore
-" If in git directory, show only files that are committed, staged, or unstaged
-" else use regular :Files
-nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
-
-" Convert the current word to uppercase in normal mode
-nnoremap <c-u> viwU
-
-" Edit the vimrc file
-nnoremap <leader>ev :vsplit ~/.dotfiles/vim/vimrc.symlink<cr>
-
-" Source the vimrc file
-nnoremap <leader>sv :source ~/.vimrc<cr>
-
-" Surround a word with double quotes
-nnoremap <leader>" viw<esc>a"<esc>bi"<esc>lel
-
-" Surround a word with single quotes
-nnoremap <leader>' viw<esc>a'<esc>bi'<esc>lel
-
-" Move to the beginning of the line
-nnoremap H 0
-
-" Move to the end of the line
-nnoremap L $
-
-" Add a semicolon to the end of the line
-nnoremap <leader>; mqA;<esc>`q
-
-" Remove trailing whitespaces
-nnoremap <leader>t :call TrimTrailingWhiteSpaces()<cr>
-" }}}
-" Autocommands {{{
-
-" Close vim when NERDTree is the only window left
-augroup close_nerd_tree
-  autocmd!
-  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-augroup end
-
-" Enable vim hard mode during start-up
-augroup hard_mode
-  autocmd!
-  autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
-augroup end
-
-" Enable emmet and make mapping works for selected file types
-let g:user_emmet_install_global = 0
-augroup enable_emmet
-  autocmd!
-  autocmd FileType html,css,jsx,js EmmetInstall
-augroup end
-
-" Highlight the symbol and its references when holding the cursor.
-augroup highlight_group
-  autocmd!
-  autocmd CursorHold * silent call CocActionAsync('highlight')
-augroup end
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-" }}}
-" Plugins {{{
+" Plugins (options){{{
 
 " Vimwiki config
 let g:vimwiki_list = [{
@@ -339,12 +132,7 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
-if has('patch8.1.1068')
-  " Use `complete_info` if your (Neo)Vim version supports it.
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -427,6 +215,208 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 let g:ackprg = 'ag --nogroup --nocolor --column'
 " }}}
+" Vim (options) {{{
+
+let mapleader = '\' " set the leader key
+
+" Tab options
+set tabstop=2 " set spaces numbers for tabbing
+set expandtab " converts tabs to spaces
+
+" Shifting options
+set shiftwidth=2 " set spaces when shifting
+set shiftround " rounds the indentation to nearest multiple of shiftwidth
+
+" Searching options
+set hlsearch " highlights searches
+set ignorecase " ignore cases when searching
+set smartcase " intelligent switch to case-sensitive when uppercase typed
+set showmatch " highlights matching parentheses, braces, and brackets
+
+" Performance options
+set lazyredraw " don't update screen during macro and script execution
+set noshowcmd " hide commands on the bottom-right corner
+set cursorline " highlight the current line under cursor
+
+" Line-number options
+set nonumber " disable absolute line numbers
+set relativenumber " use relative numbers in terms of current line
+set numberwidth=2 " set line number column width (increase by 2)
+
+" Text Rendering options
+syntax enable " enable syntax highlighting
+set encoding=utf-8 " supports unicode
+set linebreak " avoid wrapping a line in the middle of a word
+set scrolloff=1 " number of lines below the cursor
+set wrap " enable line wrapping
+set autoindent " new lines inherit the indentaton of previous lines
+
+" Code Folding options
+set foldenable " enable folding
+set foldlevelstart=10 " open most folds by default
+set foldnestmax=10 " avoid nested folds
+set foldmethod=indent " fold based on indention levels
+
+" Miscellaneous options
+set confirm " ask before closing an unsaved file
+set hidden " hide files in background, needed by TextEdit
+set history=50 " undo limit
+set nobackup " no backup :)
+set nowritebackup " no backup :)
+set noswapfile " no backup :)
+set completeopt-=preview " close auto-completion preview for coc
+set ttimeoutlen=50 " time in milliseconds to wait for a key code sequence to complete
+set clipboard=unnamed " connect to system clipboard
+set modelines=1 " run specific commands in a file on the first and last line of .vimrc
+set pastetoggle=<F2> " toggle paste mode for texts from external application
+" }}}
+" Mappings (operator-pending){{{
+
+" from current cursor till the end
+onoremap L $
+
+" inside parentheses
+onoremap p i(
+
+" contents under a markdown header
+onoremap ih :<c-u>execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"<cr>
+" }}}
+" Mappings (insert){{{
+
+" press ctrl+s save
+inoremap <c-s> <esc>:w<cr>
+
+" press ctrl+z to undo
+inoremap <c-z> <c-o>:u<cr>
+
+" convert the current word to uppercase
+inoremap <c-u> <c-o>viwU
+
+" map escape to jk
+inoremap jk <esc>
+
+" }}}
+" Mappings (normal){{{
+
+" close window
+nnoremap <c-w> :q<cr>
+
+" move down by visual line
+nnoremap j gj
+
+" move up by visual line
+nnoremap k gk
+
+" press ctrl+s to save
+nnoremap <c-s> :w<cr>
+
+" press ctrl+z to undo
+nnoremap <c-z> :u<cr>
+
+" remove the highlight on searches
+nnoremap <leader><space> :nohlsearch<cr>
+
+" search word everywhere inside the opened folder
+nnoremap <leader>z :Ag<cr>
+
+" unfold all
+nnoremap <c-[> zR
+
+" fold all
+nnoremap <c-]> zM
+
+" create a new tab
+nnoremap <c-t> :tabnew<cr>
+
+" toggle NERDTree
+nnoremap <c-\> :NERDTreeTabsToggle<cr>
+
+" toggle Prettier
+nnoremap <leader>p :Prettier<cr>
+
+" go to the last active tab
+nnoremap <leader>0 :tablast<cr>
+
+" go to the numbered tab which is 1-based
+nnoremap <leader>1 1gt
+nnoremap <leader>2 2gt
+nnoremap <leader>3 3gt
+nnoremap <leader>4 4gt
+nnoremap <leader>5 5gt
+nnoremap <leader>6 6gt
+nnoremap <leader>7 7gt
+nnoremap <leader>8 8gt
+nnoremap <leader>9 9gt
+
+" paste mode
+nnoremap <F2> :set invpaste paste?<CR>
+
+" fzf file fuzzy search that respects .gitignore
+" If in git directory, show only files that are committed, staged, or unstaged
+" else use regular :Files
+nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
+
+" Convert the current word to uppercase in normal mode
+nnoremap <c-u> viwU
+
+" Edit the vimrc file
+nnoremap <leader>ev :vsplit ~/.dotfiles/vim/vimrc.symlink<cr>
+
+" Source the vimrc file
+nnoremap <leader>sv :source ~/.vimrc<cr>
+
+" Surround a word with double quotes
+nnoremap <leader>" viw<esc>a"<esc>bi"<esc>lel
+
+" Surround a word with single quotes
+nnoremap <leader>' viw<esc>a'<esc>bi'<esc>lel
+
+" Move to the beginning of the line
+nnoremap H 0
+
+" Move to the end of the line
+nnoremap L $
+
+" Add a semicolon to the end of the line
+nnoremap <leader>; mqA;<esc>`q
+
+" Remove trailing whitespaces
+nnoremap <leader>t :call TrimTrailingWhiteSpaces()<cr>
+" }}}
+" Autocommands {{{
+
+" Close vim when NERDTree is the only window left
+augroup close_nerd_tree
+  autocmd!
+  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup end
+
+" Enable emmet and make mapping works for selected file types
+let g:user_emmet_install_global = 0
+augroup enable_emmet
+  autocmd!
+  autocmd FileType html,css,jsx,js EmmetInstall
+augroup end
+
+" Highlight the symbol and its references when holding the cursor.
+augroup highlight_group
+  autocmd!
+  autocmd CursorHold * silent call CocActionAsync('highlight')
+augroup end
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+" }}}
+" Functions {{{
+function! TrimTrailingWhiteSpaces()
+  :%s/\s\+$//e
+endfunction
+" }}}
 " Abbreviations {{{
 iabbrev @@ esculin.hao@gmail.com
 iabbrev ccopy Copyright 2020 Cykoe, all rights reserved
@@ -434,11 +424,6 @@ iabbrev waht what
 iabbrev tehn then
 iabbrev whaat what
 "}}}
-" Functions {{{
-function! TrimTrailingWhiteSpaces()
-  :%s/\s\+$//e
-endfunction
-" }}}
 " Themes {{{
 let g:material_theme_style="palenight" " default | palenight | ocean | lighter | darker
 colorscheme material " must put after the above line or style will be overrided

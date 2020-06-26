@@ -217,7 +217,7 @@ install_software () {
   install_node
   install_vundle
   install_git_prompt
-  install_nvim
+  #install_nvim
 }
 
 setup_gitconfig
