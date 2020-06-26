@@ -54,20 +54,15 @@ filetype plugin indent on
 
 " Vimwiki config
 let g:vimwiki_list = [{
-  \'path': '~/vimwiki/','syntax': 'markdown','ext': '.md'}]
+  \'path': $HOME.'/vimwiki/',
+  \'syntax': 'markdown',
+  \'ext': '.md'}]
 
 " Airline config
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_splits = 1
-
-" status bar themes
-" more here: https://github.com/vim-airline/vim-airline-themes/tree/master/autoload/airline/themes
-let g:airline_theme='onedark'
-let g:airline_left_sep = ''
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_sep = ''
-
+let g:airline#extensions#tabline#show_splits = 0
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline_theme='cool'
 " populate airline symbols with powerline symbols
 let g:airline_powerline_fonts = 1
 
@@ -76,7 +71,6 @@ if &term =~ '256color'
     " work properly when Vim is used inside tmux and GNU screen.
     set t_ut=
 endif
-
 
 " tmux
 let g:tmux_navigator_no_mappings = 1
@@ -100,7 +94,7 @@ endif
 
 " Conquer of Completion
 " Give more space for displaying messages
-set cmdheight=2
+set cmdheight=1
 
 " Having longer updatetime (default is 4000ms) leads to noticeable
 " displays and poor ux
