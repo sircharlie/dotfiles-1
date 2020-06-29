@@ -50,29 +50,27 @@ call vundle#end()
 " Required for vundle
 filetype plugin indent on
 " }}}
-" Plugins (options){{{
+" Vimwiki {{{
 
-" Vimwiki config
 let g:vimwiki_list = [{
   \'path': $HOME.'/vimwiki/',
   \'syntax': 'markdown',
   \'ext': '.md'}]
+" }}}
+" Airline {{{
 
-" Airline config
+" Show tabs on top of the screen
 let g:airline#extensions#tabline#enabled = 1
+" Show splitted file name when focus
 let g:airline#extensions#tabline#show_splits = 0
+" Hide buffers from tabs
 let g:airline#extensions#tabline#show_buffers = 0
-let g:airline_theme='cool'
 " populate airline symbols with powerline symbols
 let g:airline_powerline_fonts = 1
+let g:airline_theme='cool'
+" }}}
+" Tmux {{{
 
-if &term =~ '256color'
-    " Disable Background Color Erase (BCE) so that color schemes
-    " work properly when Vim is used inside tmux and GNU screen.
-    set t_ut=
-endif
-
-" tmux
 let g:tmux_navigator_no_mappings = 1
 
 nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
@@ -80,21 +78,11 @@ nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <c-j> :TmuxNavigateUp<cr>
 nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
 nnoremap <silent> <nop> :TmuxNavigatePrevious<cr>
-
-" NerdTree
+"}}}
+" NerdTree {{{
 let NERDTreeIgnore=['^node_modules$']
-
-if &term =~ '^screen'
-    " tmux will send xterm-style keys when its xterm-keys option is on
-    execute "set <xUp>=\e[1;*A"
-    execute "set <xDown>=\e[1;*B"
-    execute "set <xRight>=\e[1;*C"
-    execute "set <xLeft>=\e[1;*D"
-endif
-
-" Conquer of Completion
-" Give more space for displaying messages
-set cmdheight=1
+"}}}
+" Conquer of Completion {{{
 
 " Having longer updatetime (default is 4000ms) leads to noticeable
 " displays and poor ux
@@ -263,6 +251,32 @@ set ttimeoutlen=50 " time in milliseconds to wait for a key code sequence to com
 set clipboard=unnamed " connect to system clipboard
 set modelines=1 " run specific commands in a file on the first and last line of .vimrc
 set pastetoggle=<F2> " toggle paste mode for texts from external application
+set cmdheight=1 " displaying messages box height
+" }}}
+" Term {{{
+
+" Enable 24-bit true colors explicitly as setting
+" termguicolors is not enough
+" See more at :help x-term-truecolor
+"if exists('+termguicolors')
+  "let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  "let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  "set termguicolors
+"endif
+
+" Disable Background Color Erase (BCE) so that color schemes
+" work properly when Vim is used inside tmux and GNU screen.
+if &term =~ '256color'
+    set t_ut=
+endif
+
+" Tmux will send xterm-style keys when its xterm-keys option is on
+if &term =~ '^screen'
+    execute "set <xUp>=\e[1;*A"
+    execute "set <xDown>=\e[1;*B"
+    execute "set <xRight>=\e[1;*C"
+    execute "set <xLeft>=\e[1;*D"
+endif
 " }}}
 " Mappings (operator-pending){{{
 
@@ -422,12 +436,6 @@ iabbrev whaat what
 let g:material_theme_style="palenight" " default | palenight | ocean | lighter | darker
 colorscheme material " must put after the above line or style will be overrided
 
-" enable true colors
-if exists('+termguicolors')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  set termguicolors
-endif
 
 " Highlight trailing whitespaces
 match Error /\v +$/

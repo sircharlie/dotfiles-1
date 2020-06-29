@@ -1,1 +1,1 @@
-alias vw='nvim -c VimwikiIndex'
+alias vw='vim -c VimwikiIndex'
