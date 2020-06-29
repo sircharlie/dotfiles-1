@@ -22,6 +22,9 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim' " vundle package manager
 Plugin 'kaicataldo/material.vim' " material theme
+Plugin 'leafgarland/typescript-vim' " typescript syntax
+Plugin 'pangloss/vim-javascript' " javascript syntax
+Plugin 'maxmellon/vim-jsx-pretty' "jsx syntax
 Plugin 'christoomey/vim-sort-motion' " sort lines based alphabetically
 Plugin 'scrooloose/nerdtree' " file system explorer
 Plugin 'xuyuanp/nerdtree-git-plugin' " show git status flags in NERDTree
@@ -433,7 +436,7 @@ iabbrev tehn then
 iabbrev whaat what
 "}}}
 " Themes {{{
-let g:material_theme_style="palenight" " default | palenight | ocean | lighter | darker
+let g:material_theme_style="ocean" " default | palenight | ocean | lighter | darker
 colorscheme material " must put after the above line or style will be overrided
 
 
