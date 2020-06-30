@@ -331,10 +331,10 @@ nnoremap <leader><space> :nohlsearch<cr>
 nnoremap <leader>z :Ag<cr>
 
 " unfold all
-nnoremap <c-[> zR
+nnoremap <leader>] zR
 
 " fold all
-nnoremap <c-]> zM
+nnoremap <leader>[ zM
 
 " create a new tab
 nnoremap <c-t> :tabnew<cr>
