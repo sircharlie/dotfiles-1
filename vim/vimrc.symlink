@@ -22,6 +22,7 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim' " vundle package manager
 Plugin 'kaicataldo/material.vim' " material theme
+Plugin 'roxma/vim-paste-easy' " automatic paste mode
 Plugin 'leafgarland/typescript-vim' " typescript syntax
 Plugin 'pangloss/vim-javascript' " javascript syntax
 Plugin 'maxmellon/vim-jsx-pretty' "jsx syntax
@@ -78,7 +79,7 @@ let g:tmux_navigator_no_mappings = 1
 
 nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
-nnoremap <silent> <c-j> :TmuxNavigateUp<cr>
+nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
 nnoremap <silent> <nop> :TmuxNavigatePrevious<cr>
 "}}}
