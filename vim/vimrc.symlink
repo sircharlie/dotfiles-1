@@ -1,3 +1,4 @@
+" Cykoe's vim settings
 "            _
 "           | |
 "  ___ _   _| | _____   ___
@@ -6,10 +7,8 @@
 " \___|\__, |_|\_\___/ \___|
 "       __/ |
 "      |___/
-" Cykoe's personal vim settings
 " =============================
-" Plugins (Vundle) {{{
-
+" Plugins {{{
 " Required for Vundle
 set nocompatible
 
@@ -23,7 +22,7 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim' " vundle package manager
 Plugin 'neoclide/coc.nvim', {'branch': 'release'} " code completion
-Plugin 'kaicataldo/material.vim' " material theme
+Plugin 'morhetz/gruvbox' " theme
 Plugin 'roxma/vim-paste-easy' " automatic paste mode
 Plugin 'leafgarland/typescript-vim' " typescript syntax
 Plugin 'pangloss/vim-javascript' " javascript syntax
@@ -53,14 +52,12 @@ call vundle#end()
 filetype plugin indent on
 " }}}
 " Vimwiki {{{
-
 let g:vimwiki_list = [{
   \'path': $HOME.'/vimwiki/',
   \'syntax': 'markdown',
   \'ext': '.md'}]
 " }}}
 " Airline {{{
-
 " Show tabs on top of the screen
 let g:airline#extensions#tabline#enabled = 1
 " Show splitted file name when focus
@@ -72,7 +69,6 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme='cool'
 " }}}
 " Tmux {{{
-
 let g:tmux_navigator_no_mappings = 1
 
 nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
@@ -83,9 +79,22 @@ nnoremap <silent> <nop> :TmuxNavigatePrevious<cr>
 "}}}
 " NerdTree {{{
 let NERDTreeIgnore=['^node_modules$']
-"}}}
-" Conquer of Completion {{{
 
+" Close vim when NERDTree is the only window left
+augroup close_nerd_tree
+  autocmd!
+  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup end
+"}}}
+" Emmet {{{
+" Enable emmet and make mapping works for selected file types
+let g:user_emmet_install_global = 0
+augroup enable_emmet
+  autocmd!
+  autocmd FileType html,css,typescriptreact,javascript EmmetInstall
+augroup end
+" }}}
+" Conquer of Completion {{{
 set hidden " TextEdit might fail if hidden is not set
 
 set nobackup " Some servers have issues with backup files
@@ -220,8 +229,22 @@ let g:coc_global_extensions = [
 " coc-prettier
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 " }}}
-" Vim (options) {{{
+" Term {{{
+" Disable Background Color Erase (BCE) so that color schemes
+" work properly when Vim is used inside tmux and GNU screen.
+if &term =~ '256color'
+    set t_ut=
+endif
 
+" Tmux will send xterm-style keys when its xterm-keys option is on
+if &term =~ '^screen'
+    execute "set <xUp>=\e[1;*A"
+    execute "set <xDown>=\e[1;*B"
+    execute "set <xRight>=\e[1;*C"
+    execute "set <xLeft>=\e[1;*D"
+endif
+" }}}
+" Vim (options) {{{
 let mapleader = '\' " set the leader key
 
 set bs=2 " allow backspace deletion
@@ -239,6 +262,7 @@ set hlsearch " highlights searches
 set ignorecase " ignore cases when searching
 set smartcase " intelligent switch to case-sensitive when uppercase typed
 set showmatch " highlights matching parentheses, braces, and brackets
+set incsearch " highlights search results while typing"
 
 " Performance options
 set lazyredraw " don't update screen during macro and script execution
@@ -254,7 +278,7 @@ set numberwidth=2 " set line number column width (increase by 2)
 syntax enable " enable syntax highlighting
 set encoding=utf-8 " supports unicode
 set linebreak " avoid wrapping a line in the middle of a word
-set scrolloff=1 " number of lines below the cursor
+set scrolloff=2 " number of lines below the cursor
 set wrap " enable line wrapping
 set autoindent " new lines inherit the indentaton of previous lines
 
@@ -271,47 +295,19 @@ set completeopt-=preview " close auto-completion preview for coc
 set ttimeoutlen=50 " time in milliseconds to wait for a key code sequence to complete
 set clipboard=unnamed " connect to system clipboard
 set modelines=1 " run specific commands in a file on the first and last line of .vimrc
-set pastetoggle=<F2> " toggle paste mode for texts from external application
 set cmdheight=1 " displaying messages box height
 " }}}
-" Term {{{
-
-" Enable 24-bit true colors explicitly as setting
-" termguicolors is not enough
-" See more at :help x-term-truecolor
-"if exists('+termguicolors')
-  "let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  "let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  "set termguicolors
-"endif
-
-" Disable Background Color Erase (BCE) so that color schemes
-" work properly when Vim is used inside tmux and GNU screen.
-if &term =~ '256color'
-    set t_ut=
-endif
-
-" Tmux will send xterm-style keys when its xterm-keys option is on
-if &term =~ '^screen'
-    execute "set <xUp>=\e[1;*A"
-    execute "set <xDown>=\e[1;*B"
-    execute "set <xRight>=\e[1;*C"
-    execute "set <xLeft>=\e[1;*D"
-endif
-" }}}
 " Mappings (operator-pending){{{
-
-" from current cursor till the end
+" From current cursor till the end
 onoremap L $
 
-" inside parentheses
+" Inside parentheses
 onoremap p i(
 
-" contents under a markdown header
+" Contents under a markdown header
 onoremap ih :<c-u>execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"<cr>
 " }}}
 " Mappings (insert){{{
-
 " press ctrl+s save
 inoremap <c-s> <esc>:w<cr>
 
@@ -414,22 +410,7 @@ nnoremap <leader>; mqA;<esc>`q
 
 " Remove trailing whitespaces
 nnoremap <leader>t :call TrimTrailingWhiteSpaces()<cr>
-" }}}
-" Autocommands {{{
 
-" Close vim when NERDTree is the only window left
-augroup close_nerd_tree
-  autocmd!
-  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-augroup end
-
-" Enable emmet and make mapping works for selected file types
-let g:user_emmet_install_global = 0
-augroup enable_emmet
-  autocmd!
-  autocmd FileType html,css,typescriptreact EmmetInstall
-augroup end
-" Functions {{{
 function! TrimTrailingWhiteSpaces()
   :%s/\s\+$//e
 endfunction
@@ -442,9 +423,8 @@ iabbrev tehn then
 iabbrev whaat what
 "}}}
 " Themes {{{
-let g:material_theme_style="ocean" " default | palenight | ocean | lighter | darker
-colorscheme material " must put after the above line or style will be overrided
-
+colorscheme gruvbox
+set background=dark    " Setting dark mode
 
 " Highlight trailing whitespaces
 match Error /\v +$/
