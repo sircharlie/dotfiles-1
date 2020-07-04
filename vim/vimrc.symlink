@@ -29,7 +29,6 @@ Plugin 'pangloss/vim-javascript' " javascript syntax
 Plugin 'maxmellon/vim-jsx-pretty' "jsx syntax
 Plugin 'christoomey/vim-sort-motion' " sort lines based alphabetically
 Plugin 'scrooloose/nerdtree' " file system explorer
-Plugin 'xuyuanp/nerdtree-git-plugin' " show git status flags in NERDTree
 Plugin 'jistr/vim-nerdtree-tabs' " show one NERDTree in all tabs
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight' " extra syntax and highlight for nerdtree files
 Plugin 'ryanoasis/vim-devicons' " support filetype glyphs
@@ -40,9 +39,7 @@ Plugin 'preservim/nerdcommenter' " comment codes
 Plugin 'christoomey/vim-tmux-navigator' " navigate seamlessly between vim and tmux splits
 Plugin 'junegunn/fzf' " file finder
 Plugin 'junegunn/fzf.vim' " file finder for vim
-Plugin 'terryma/vim-multiple-cursors' " enable multiple selections
 Plugin 'vimwiki/vimwiki' " notes app for vim
-Plugin 'editorconfig/editorconfig-vim' " editorConfig plugin for vim
 Plugin 'vim-airline/vim-airline' " cool status lines for vim
 Plugin 'vim-airline/vim-airline-themes' " cool themes
 Plugin 'easymotion/vim-easymotion' " navigate using words
