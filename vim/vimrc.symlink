@@ -42,7 +42,6 @@ Plugin 'junegunn/fzf.vim' " file finder for vim
 Plugin 'vimwiki/vimwiki' " notes app for vim
 Plugin 'vim-airline/vim-airline' " cool status lines for vim
 Plugin 'vim-airline/vim-airline-themes' " cool themes
-Plugin 'easymotion/vim-easymotion' " navigate using words
 call vundle#end()
 
 " Required for vundle
@@ -116,7 +115,7 @@ inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -292,7 +291,7 @@ set completeopt-=preview " close auto-completion preview for coc
 set ttimeoutlen=50 " time in milliseconds to wait for a key code sequence to complete
 set clipboard=unnamed " connect to system clipboard
 set modelines=1 " run specific commands in a file on the first and last line of .vimrc
-set cmdheight=1 " displaying messages box height
+set cmdheight=2 " displaying messages box height
 " }}}
 " Mappings (operator-pending){{{
 " From current cursor till the end
@@ -316,10 +315,8 @@ inoremap <c-u> <esc>viwUei
 
 " map escape to jk
 inoremap jk <esc>
-
 " }}}
 " Mappings (normal){{{
-
 execute "set <M-j>=\ej"
 execute "set <M-k>=\ek"
 
@@ -373,15 +370,12 @@ nnoremap <leader>7 7gt
 nnoremap <leader>8 8gt
 nnoremap <leader>9 9gt
 
-" paste mode
-nnoremap <F2> :set invpaste paste?<CR>
-
 " fzf file fuzzy search that respects .gitignore
 " If in git directory, show only files that are committed, staged, or unstaged
 " else use regular :Files
 nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
 
-" Convert the current word to uppercase in normal mode
+" Convert the current word to uppercase
 nnoremap <c-u> viwU
 
 " Edit the vimrc file
@@ -405,12 +399,8 @@ nnoremap L $
 " Add a semicolon to the end of the line
 nnoremap <leader>; mqA;<esc>`q
 
-" Remove trailing whitespaces
-nnoremap <leader>t :call TrimTrailingWhiteSpaces()<cr>
-
-function! TrimTrailingWhiteSpaces()
-  :%s/\s\+$//e
-endfunction
+" Remove the file's all trailing whitespaces
+nnoremap <leader>t :%s/\s\+$//e<cr>
 " }}}
 " Abbreviations {{{
 iabbrev @@ esculin.hao@gmail.com
