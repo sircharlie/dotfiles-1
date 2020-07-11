@@ -214,7 +214,6 @@ let g:coc_global_extensions = [
   \ 'coc-css',
   \ 'coc-python',
   \ 'coc-json',
-  \ 'coc-pairs',
   \ 'coc-snippets',
   \ 'coc-marketplace',
   \ 'coc-prettier',
