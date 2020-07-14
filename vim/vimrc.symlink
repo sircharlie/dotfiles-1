@@ -290,7 +290,7 @@ set completeopt-=preview " close auto-completion preview for coc
 set ttimeoutlen=50 " time in milliseconds to wait for a key code sequence to complete
 set clipboard=unnamed " connect to system clipboard
 set modelines=1 " run specific commands in a file on the first and last line of .vimrc
-set cmdheight=2 " displaying messages box height
+set cmdheight=1 " displaying messages box height
 " }}}
 " Mappings (operator-pending){{{
 " From current cursor till the end
@@ -310,7 +310,7 @@ inoremap <c-s> <esc>:w<cr>
 inoremap <c-z> <c-o>:u<cr>
 
 " convert the current word to uppercase
-inoremap <c-u> <esc>viwUei
+inoremap <c-u> <esc>viwUea
 
 " map escape to jk
 inoremap jk <esc>
