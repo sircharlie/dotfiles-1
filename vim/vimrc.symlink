@@ -56,7 +56,7 @@ let g:airline#extensions#tabline#show_splits = 0
 let g:airline#extensions#tabline#show_buffers = 0
 " populate airline symbols with powerline symbols
 let g:airline_powerline_fonts = 1
-let g:airline_theme='cool'
+let g:airline_theme='cobalt2'
 " }}}
 " Tmux {{{
 let g:tmux_navigator_no_mappings = 1
@@ -289,6 +289,9 @@ onoremap L $
 " Inside parentheses
 onoremap p i(
 
+" Inside double quotes
+onoremap q i"
+
 " Contents under a markdown header
 onoremap ih :<c-u>execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"<cr>
 " }}}
@@ -390,6 +393,9 @@ nnoremap L $
 
 " Add a semicolon to the end of the line
 nnoremap <leader>; mqA;<esc>`q
+
+" Add a comma to the end of the line
+nnoremap <leader>, mqA,<esc>`q
 
 " Remove the file's all trailing whitespaces
 nnoremap <leader>t :%s/\s\+$//e<cr>
