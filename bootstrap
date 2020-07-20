@@ -19,14 +19,20 @@ success () {
   echo -e "\r\033[2K  [ \033[00;32m👍\033[0m ] $1"
 }
 
-fail () {
+harness () {
   if [ $? -eq 0 ]; then
     success "$1 is installed"
   else
-    echo -e "\r\033[2K  [ \033[0;31mFAIL\033[0m ] error installing $1"
+    echo -e "\r\033[2K  [ \033[0;31mFAIL\033[0m ] $1"
     echo ''
     exit
   fi
+}
+
+fail () {
+  echo -e "\r\033[2K  [ \033[0;31mFAIL\033[0m ] $1"
+  echo ''
+  exit
 }
 
 setup_gitconfig () {
@@ -34,7 +40,7 @@ setup_gitconfig () {
     info 'setup gitconfig'
 
     git_credential='cache'
-    
+
 		if [ "$(uname -s)" == "Darwin" ]; then
       git_credential='osxkeychain'
     fi
@@ -150,11 +156,11 @@ install_dotfiles () {
   done
 }
 
-install_vim() {
+install_nvm() {
   info 'installing nvm...'
   if [ ! -f "$HOME/.nvm/nvm.sh" ]; then
     curl -o- -s https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash &> /dev/null
-    fail "nvm"
+    harness "nvm"
   else
     success 'skipped nvm'
   fi
@@ -167,7 +173,7 @@ install_node() {
     . "$HOME/.bashrc"
     . "$NVM_DIR/nvm.sh"
     nvm install node --lts &> /dev/null
-    fail 'node'
+    harness 'node'
   else
     success 'skipped node'
   fi
@@ -177,7 +183,7 @@ install_vundle() {
   info 'installing vundle...'
   if [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim &> /dev/null
-    fail "vundle"
+    harness "vundle"
   else
     success 'skipped vundle'
   fi
@@ -187,38 +193,31 @@ install_git_prompt() {
   info 'installing git-prompt...'
   if [ ! -d "$HOME/.bash-git-prompt" ]; then
     git clone https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt --depth=1 &> /dev/null
-    fail 'git-prompt'
+    harness 'git-prompt'
   else
     success 'skipped bash-git-prompt'
   fi
 }
 
-install_nvim() {
-  info 'installing neovim...'
-
-  if [ ! -d "$HOME/squashfs-root" ]; then
-    cd $HOME
-    curl -LOs https://github.com/neovim/neovim/releases/download/v0.4.3/nvim.appimage
-    chmod u+x ./nvim.appimage
-    ./nvim.appimage --appimage-extract &> /dev/null
-    rm ./nvim.appimage
-    fail 'neovim'
-    cd $DOTFILES_ROOT
-    mkdir -p $HOME/.config/nvim
-    touch $HOME/.config/nvim/init.vim
-    echo -e "set runtimepath^=~/.vim runtimepath+=~/.vim/after\nlet &packpath = &runtimepath\nsource ~/.vimrc" > $HOME/.config/nvim/init.vim
-  else
-    success 'skipped neovim'
+check_prerequisite () {
+  info 'checking prerequisite softwares...'
+  if  ! command -v curl &> /dev/null ; then
+    fail 'please install curl'
   fi
+  if  ! command -v vim &> /dev/null ; then
+    fail 'Vim is required'
+  fi
+  success 'prerequisite softwares installed'
 }
 
 install_software () {
-  install_vim
+  install_nvm
   install_node
   install_vundle
   install_git_prompt
-  #install_nvim
 }
+
+check_prerequisite
 
 setup_gitconfig
 
