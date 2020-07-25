@@ -230,4 +230,8 @@ success 'Everything is installed!'
 echo ''
 info "Run 'source ~/.bashrc' to activate paths and env variables!"
 info "Run 'vim +PluginInstall +qall' in vim to setup more vim!"
+info "Vim language server requires installation of Yarn, please do so."
+info "If encounter module not found error during package installing with yarn, remove yarn.lock in ~/.vim/bundle/coc.nvim"
+info "To make terminal compatible with some icons in vim, install delugia-code at https://github.com/adam7/delugia-code"
+info "And intall tmux themepack at https://github.com/jimeh/tmux-themepack"
 echo ''
