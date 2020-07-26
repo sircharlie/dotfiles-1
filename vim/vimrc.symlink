@@ -18,6 +18,7 @@ if isdirectory(expand('$HOME/.vim/bundle/Vundle.vim'))
   Plugin 'VundleVim/Vundle.vim' " vundle package manager
   Plugin 'neoclide/coc.nvim', {'branch': 'release'} " code completion
   Plugin 'morhetz/gruvbox' " theme
+  Plugin 'pangloss/vim-javascript' " syntax highlighting and indentation for js
   Plugin 'roxma/vim-paste-easy' " automatic paste mode
   Plugin 'scrooloose/nerdtree' " file system explorer
   Plugin 'jistr/vim-nerdtree-tabs' " show just one NERDTree in all tabs
