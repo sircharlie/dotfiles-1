@@ -29,6 +29,7 @@ if isdirectory(expand('$HOME/.vim/bundle/Vundle.vim'))
   Plugin 'vim-syntastic/syntastic' " Display syntax errors
   Plugin 'preservim/nerdcommenter' " comment codes
   Plugin 'christoomey/vim-tmux-navigator' " navigate seamlessly between vim and tmux splits
+  Plugin 'christoomey/vim-sort-motion' " sort lines alphabetically
   Plugin 'junegunn/fzf' " file finder
   Plugin 'junegunn/fzf.vim' " file finder for vim
   Plugin 'vimwiki/vimwiki' " notes app for vim
